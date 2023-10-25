@@ -7,12 +7,12 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/welcomeId"
+        android:id="@+id/helloId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
-        android:text="Welcome :)"
+        android:text="Hello!"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,50 +32,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/create_acc"
+        android:id="@+id/signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create an account to continue"
+        android:text="Log into your account"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecipeSaverId" />
-
-    <EditText
-        android:id="@+id/firstName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter First Name*"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintEnd_toStartOf="@id/lastName"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_acc" />
-
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter Last Name*"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/firstName"
-        app:layout_constraintTop_toTopOf="@+id/firstName" />
 
     <EditText
         android:id="@+id/email"
@@ -83,7 +47,7 @@
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="128dp"
-        android:layout_marginTop="496dp"
+        android:layout_marginTop="450dp"
         android:background="@drawable/edittext_rounded_bg"
         android:ems="8"
         android:hint="Enter Email*"
@@ -99,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginStart="128dp"
-        android:layout_marginTop="580dp"
+        android:layout_marginTop="530dp"
         android:background="@drawable/edittext_rounded_bg"
         android:ems="8"
         android:hint="Enter Password*"
@@ -112,11 +76,11 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signup"
+        android:id="@+id/login"
         android:layout_width="200dp"
         android:layout_height="48dp"
         android:background="@drawable/button_rounded_bg"
-        android:text="Sign up"
+        android:text="Log In"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,48 +90,47 @@
         app:layout_constraintVertical_bias="0.553" />
 
     <TextView
-        android:id="@+id/HaveAcc"
+        android:id="@+id/DHaveAcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Already have an account?"
+        android:text="Don’t have an account?"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/login"
+        app:layout_constraintEnd_toStartOf="@id/signup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/login"
+        android:id="@+id/signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:autoLink="none"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
-        android:text="Log In"
+        android:text="Sign up"
         android:textColor="#ADD8E6"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:autoLink="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/HaveAcc" />
+        app:layout_constraintStart_toEndOf="@id/DHaveAcc" />
 
 
     <ImageView
         android:id="@+id/myImageView"
         android:layout_width="380dp"
         android:layout_height="200dp"
-    android:src="@drawable/cooking"
-    android:scaleType="centerCrop"
-    app:layout_constraintTop_toBottomOf="@id/welcomeId"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
-
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cooking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/helloId" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
