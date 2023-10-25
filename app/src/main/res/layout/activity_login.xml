@@ -41,38 +41,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecipeSaverId" />
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="450dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter Email*"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/rectangle_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/rectangle_background"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/signin"
+        tools:layout_editor_absoluteX="25dp">
 
-    <EditText
-        android:id="@+id/Password"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="530dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter Password*"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edittext_rounded_bg"
+            android:hint="Email*"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
+
+        <!-- Row for Password -->
+        <EditText
+            android:id="@+id/Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edittext_rounded_bg"
+            android:hint="Password*"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
+
+    </LinearLayout>
 
 
     <androidx.appcompat.widget.AppCompatButton
@@ -86,8 +100,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Password"
-        app:layout_constraintVertical_bias="0.553" />
+        app:layout_constraintTop_toBottomOf="@+id/rectangle_container"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/DHaveAcc"
