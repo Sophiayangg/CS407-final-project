@@ -19,11 +19,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="380dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cooking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcomeId" />
+
     <TextView
         android:id="@+id/RecipeSaverId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="310dp"
         android:text="RecipeSaver!"
         android:textSize="38sp"
         android:textStyle="bold"
@@ -35,81 +46,117 @@
         android:id="@+id/create_acc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create an account to continue"
+        android:text="Create an account"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecipeSaverId" />
 
-    <EditText
-        android:id="@+id/firstName"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/real"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter First Name*"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintEnd_toStartOf="@id/lastName"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        android:text="and become a real chief!"
+        android:textColor="#888888"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_acc" />
 
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="0dp"
+
+    <LinearLayout
+        android:id="@+id/rectangle_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter Last Name*"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/firstName"
-        app:layout_constraintTop_toTopOf="@+id/firstName" />
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/rectangle_background"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/real"
+        tools:layout_editor_absoluteX="25dp">
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="496dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter Email*"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!-- Row for First Name and Last Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/Password"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="580dp"
-        android:background="@drawable/edittext_rounded_bg"
-        android:ems="8"
-        android:hint="Enter Password*"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:textColor="#333333"
-        android:textColorHint="#888888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/edittext_rounded_bg"
+                android:hint="First Name*"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="#333333"
+                android:textColorHint="#888888" />
 
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edittext_rounded_bg"
+                android:hint="Last Name*"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="#333333"
+                android:textColorHint="#888888" />
+        </LinearLayout>
+
+        <!-- Row for Email -->
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edittext_rounded_bg"
+            android:hint="Email*"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
+
+        <!-- Row for Password -->
+        <EditText
+            android:id="@+id/Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edittext_rounded_bg"
+            android:hint="Password*"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="#333333"
+            android:textColorHint="#888888" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:buttonTint="@color/checkbox_color"
+            android:text="I agree to the terms of service"
+            android:textSize="8sp"
+            app:layout_constraintStart_toStartOf="@id/Password"
+            app:layout_constraintTop_toBottomOf="@id/Password" />
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signup"
@@ -122,8 +169,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/Password"
-        app:layout_constraintVertical_bias="0.553" />
+        app:layout_constraintTop_toBottomOf="@+id/rectangle_container"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/HaveAcc"
@@ -142,31 +189,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:autoLink="none"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
         android:text="Log In"
         android:textColor="#ADD8E6"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textStyle="bold"
-        android:autoLink="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/HaveAcc" />
 
 
-    <ImageView
-        android:id="@+id/myImageView"
-        android:layout_width="380dp"
-        android:layout_height="200dp"
-    android:src="@drawable/cooking"
-    android:scaleType="centerCrop"
-    app:layout_constraintTop_toBottomOf="@id/welcomeId"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
+
+
+
 
 
 
