@@ -1,7 +1,7 @@
 # CS407-final-project
 Welcome to RecipeSaver!!!
 
-__App Description👀__
+__App Description👀__\n
 RecipeSaver is a user-friendly recipe management app designed to streamline the cooking experience. It simplifies the process of collecting, organizing, and accessing recipes, ensuring users can easily prepare their favorite dishes anytime they want to cook.
 
 __Things need to do!__
