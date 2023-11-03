@@ -1,7 +1,9 @@
 package com.cs407.final_project;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -12,12 +14,24 @@ public class DBHelper{
     {this.sqLiteDatabase = sqLiteDatabase;}
     public static void createTable(){
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS users "+
-                "(id INTEGER PRIMARY KEY, firstname TEXT, lastname TEXT, email TEXT, password TEXT)");
+                "(id INTEGER PRIMARY KEY, firstname TEXT, lastname TEXT, email TEXT UNIQUE, password TEXT)");
     }
-    public void saveUser(String firstname, String lastname, String email, String password){
+    public String saveUser(String firstname, String lastname, String email, String password){
         createTable();
-        sqLiteDatabase.execSQL("INSERT INTO users (firstname,lastname, email, password) VALUES (?,?,?,?)",
-                new String[]{firstname,lastname, email,password});
+        ContentValues values = new ContentValues();
+        values.put("firstname", firstname);
+        values.put("lastname", lastname);
+        values.put("email", email);
+        values.put("password", password);
+        try {
+            sqLiteDatabase.insertOrThrow("users", null, values);
+            return "User registered successfully.";
+        } catch (SQLiteConstraintException e) {
+            Log.e("DBHelper", "Error: Duplicate email", e);
+            return "Error: This email is already registered.";
+        }
+        //sqLiteDatabase.execSQL("INSERT INTO users (firstname,lastname, email, password) VALUES (?,?,?,?)",
+                //new String[]{firstname,lastname, email,password});
     }
     public boolean authenticateUser(String email, String passwordInput){
         try{

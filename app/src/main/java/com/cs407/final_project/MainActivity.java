@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,12 +75,22 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 Context context = getApplicationContext();
-                SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("users",Context.MODE_PRIVATE,null);
-                DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-                dbHelper.saveUser(firstname,lastname,email,password);
+                SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("users", Context.MODE_PRIVATE, null);
 
-                Intent intent = new Intent(MainActivity.this, Home.class);
-                startActivity(intent);
+                DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+                String message = dbHelper.saveUser(firstname, lastname, email, password);
+                Log.i("RegistrationTag", message);
+
+                // Check if the message indicates a duplicate email and show a Toast in that case
+                if (message.contains("already registered")) {
+                    Toast.makeText(MainActivity.this, "duplicated email.", Toast.LENGTH_LONG).show();
+                    //showErrorToast(message);
+                } else {
+                    // Only proceed to the Home activity if the user was registered successfully
+                    Intent intent = new Intent(MainActivity.this, Home.class);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -89,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
     private boolean isPasswordStrong(String password) {
-        // Example check for a strong password: at least one digit, one lowercase, one uppercase, one special character, and minimum 8 characters long
-        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        //  password that must be at least 6 characters long, contain at least one number, and one lowercase letter
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z]).{6,}$";
         return password.matches(passwordPattern);
     }
 
