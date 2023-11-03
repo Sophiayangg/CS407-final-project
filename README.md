@@ -7,15 +7,8 @@ RecipeSaver is a user-friendly recipe management app designed to streamline the 
 
 __Things need to do!__
 
-  handle the case where the username is duplicated(output an error message..)
-  
-  the user has to agree with the terms of use before signing up, if not output an error message..
+  handle the case where the email is duplicated, meaning that the user has an account already...(output an error message..)
   
   Add another page if the user forget the password in the login page
-  
-  make sure that the email that the user entered is valid, if not output an error message..
-  
-  need requirement when the user enter password?
-  
-  texts in the bottom of the login and signup oage need to be bigger
 
+  make sure that the user's email and password matches with each other when logging in 
