@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (!isPasswordStrong(password)) {
-                    showErrorToast("Password does not meet requirements.");
+                    showErrorToast("Password must be at least 6 characters long, contain at least one number, and one lowercase letter.");
                     return;
                 }
                 Context context = getApplicationContext();
@@ -83,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
 
                 // Check if the message indicates a duplicate email and show a Toast in that case
                 if (message.contains("already registered")) {
-                    Toast.makeText(MainActivity.this, "duplicated email.", Toast.LENGTH_LONG).show();
-                    //showErrorToast(message);
+                    //Toast.makeText(MainActivity.this, "duplicated email.", Toast.LENGTH_LONG).show();
+                    showErrorToast(message);
                 } else {
                     // Only proceed to the Home activity if the user was registered successfully
                     Intent intent = new Intent(MainActivity.this, Home.class);
+                    intent.putExtra("USER_NAME", firstname); // Pass the user's first name
                     startActivity(intent);
                 }
 

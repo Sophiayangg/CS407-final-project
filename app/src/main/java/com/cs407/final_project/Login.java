@@ -53,18 +53,23 @@ public class Login extends AppCompatActivity {
                 Context context = getApplicationContext();
                 SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("users",Context.MODE_PRIVATE,null);
                 DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-                if(dbHelper.authenticateUser(email,password)){
+                if (dbHelper.authenticateUser(email, password)) {
+                    String firstName = dbHelper.getFirstName(email); // Use the new method to get the first name
+
+                    if (firstName != null && !firstName.isEmpty()) {
+                        Intent intent = new Intent(Login.this, Home.class);
+                        intent.putExtra("USER_NAME", firstName);
+                        startActivity(intent);
+                        finish(); // Close the login activity
+                    } else {
+                        // Handle the error case where the first name couldn't be retrieved
+                        TextView errorMessage = findViewById(R.id.errorMessage);
+                        errorMessage.setText("Error retrieving user information.");
+                    }
+                } else {
+                    // Authentication failed
                     TextView errorMessage = findViewById(R.id.errorMessage);
-                    errorMessage.setText("");
-                    editTextEmail.setText("");
-                    editTextPassword.setText("");
-                    Intent intent = new Intent(Login.this, Home.class);
-                    startActivity(intent);
-                }else{
-                    editTextEmail.setText("");
-                    editTextPassword.setText("");
-                    TextView errorMessage = findViewById(R.id.errorMessage);
-                    errorMessage.setText("Invalid email or password");
+                    errorMessage.setText("Invalid email or password.");
                 }
             }
         });

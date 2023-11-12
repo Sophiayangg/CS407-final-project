@@ -54,4 +54,37 @@ public class DBHelper{
         }
         return false;
     }
+
+    public String getFirstName(String email) {
+        String firstName = null;
+        Cursor cursor = null;
+        try {
+            // Prepare query to select the first name of the user with the given email
+            String query = "SELECT firstname FROM users WHERE email = ?";
+            cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
+
+            // Check if the cursor has at least one result
+            if (cursor.moveToFirst()) {
+                int firstNameIndex = cursor.getColumnIndex("firstname");
+
+                // Check if the index is valid
+                if (firstNameIndex != -1) {
+                    firstName = cursor.getString(firstNameIndex);
+                } else {
+                    // Handle the case where the column doesn't exist
+                    // This could throw an exception or return null
+                }
+            }
+        } catch (Exception e) {
+            // Handle exceptions
+            e.printStackTrace();
+        } finally {
+            // Make sure to close the cursor
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return firstName;
+    }
+
 }

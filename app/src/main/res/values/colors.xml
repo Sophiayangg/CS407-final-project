@@ -6,5 +6,7 @@
     <color name="myTextColor">#FF0000</color>
     <color name="errorColor">#D32F2F</color> <!-- Red for errors -->
     <color name="backgroundColor">#FFFFFF</color> <!-- White for the background -->
+    <color name="default_color">#D3D3D3</color> <!-- Light grey for default -->
+    <color name="pressed_color">#A9A9A9</color>
 
 </resources>

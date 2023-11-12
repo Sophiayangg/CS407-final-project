@@ -1,17 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home">
+    android:padding="16dp"
+    android:background="#f5f5f5">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvGreeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
-        android:textSize="30dp"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="345dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Hello, "
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tvCookingPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvGreeting"
+        android:text="What are we cooking today?"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/searchSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCookingPrompt"
+        android:orientation="vertical"
+        android:background="#e0e0e0"
+        android:layout_marginTop="16dp"
+        android:padding="8dp">
+
+    <!-- Search bar and button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Find your food..."
+            android:background="@drawable/search_background"
+            android:padding="12dp" />
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button_search_custom"
+            android:src="@drawable/button"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- Container for popular search terms -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical"
+        android:layout_marginTop="8dp">
+
+        <!-- Repeat this block for each popular term you want to display -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popular"
+            android:background="@drawable/popular_term_background"
+            android:padding="4dp"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onPopularTermClick"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lunch"
+            android:background="@drawable/popular_term_background"
+            android:padding="4dp"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onPopularTermClick"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beginner"
+            android:background="@drawable/popular_term_background"
+            android:padding="4dp"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onPopularTermClick"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Snacks"
+            android:background="@drawable/popular_term_background"
+            android:padding="4dp"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onPopularTermClick"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gluten-Free"
+            android:background="@drawable/popular_term_background"
+            android:padding="4dp"
+            android:layout_margin="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="onPopularTermClick"/>
+
+
+    </LinearLayout>
+</LinearLayout>
+
+
+    <!-- Include other UI components as needed -->
+
+</RelativeLayout>
