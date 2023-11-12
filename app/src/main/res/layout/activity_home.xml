@@ -123,6 +123,17 @@
 
     </LinearLayout>
 </LinearLayout>
+    <TextView
+        android:id="@+id/tvChatGPTOutput"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/searchSection"
+        android:background="#E1E1E1"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:layout_marginTop="50dp"
+        android:text="ChatGPT output here..."
+        android:textColor="#757575" />
 
 
     <!-- Include other UI components as needed -->

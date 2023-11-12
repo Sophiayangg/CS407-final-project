@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
 
@@ -64,14 +67,29 @@ public class Login extends AppCompatActivity {
                     } else {
                         // Handle the error case where the first name couldn't be retrieved
                         TextView errorMessage = findViewById(R.id.errorMessage);
-                        errorMessage.setText("Error retrieving user information.");
+                        showErrorToast("Error retrieving user information.");
                     }
                 } else {
                     // Authentication failed
                     TextView errorMessage = findViewById(R.id.errorMessage);
-                    errorMessage.setText("Invalid email or password.");
+                    showErrorToast("Incorrect email or password.");
                 }
             }
         });
+    }
+
+    private void showErrorToast(String message) {
+        // Inflate the custom layout.
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast_layout,
+                (ViewGroup) findViewById(R.id.custom_toast_container)); // Replace with the ID of your container
+
+        TextView text = (TextView) layout.findViewById(R.id.toast_text);
+        text.setText(message); // Set your error message
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout); // Set the inflated layout
+        toast.show();
     }
 }
