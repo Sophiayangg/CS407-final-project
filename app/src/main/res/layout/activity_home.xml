@@ -12,8 +12,13 @@
         android:text="Hello, "
         android:textSize="24sp"
         android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
         android:layout_marginTop="24dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+         />
 
     <TextView
         android:id="@+id/tvCookingPrompt"
@@ -21,9 +26,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvGreeting"
         android:text="What are we cooking today?"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        />
+
 
     <LinearLayout
         android:id="@+id/searchSection"
@@ -126,7 +138,7 @@
     <TextView
         android:id="@+id/tvChatGPTOutput"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="240dp"
         android:layout_below="@id/searchSection"
         android:background="#E1E1E1"
         android:padding="16dp"
@@ -135,7 +147,42 @@
         android:text="ChatGPT output here..."
         android:textColor="#757575" />
 
+    <!-- Like ImageButton for saving recipes -->
+    <ImageButton
+        android:id="@+id/btnLike"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/tvChatGPTOutput"
+        android:layout_toStartOf="@+id/centerGuideline"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_like"
+        android:background="?android:selectableItemBackground"
+        android:scaleType="fitCenter" />
 
-    <!-- Include other UI components as needed -->
+    <ImageView
+        android:id="@+id/centerGuideline"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true" />
+
+    <!-- Note ImageButton for taking notes -->
+    <ImageButton
+        android:id="@+id/btnNote"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/tvChatGPTOutput"
+        android:layout_toEndOf="@id/centerGuideline"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_note"
+        android:background="?android:selectableItemBackground"
+        android:scaleType="fitCenter"/>
+
+
+
+
+
+
 
 </RelativeLayout>
