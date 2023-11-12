@@ -9,4 +9,12 @@ __Things need to do!__
 
   Add another page if the user forget the password in the login page
 
+  filter
+
+  bottom navigations 
+
+  API
+
+  when the window pops up,users cannot see what are being typed
+
 
