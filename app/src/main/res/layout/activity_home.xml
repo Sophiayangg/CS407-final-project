@@ -86,8 +86,8 @@
             android:layout_height="wrap_content"
             android:text="Popular"
             android:background="@drawable/popular_term_background"
-            android:padding="4dp"
-            android:layout_margin="2dp"
+            android:padding="2dp"
+            android:layout_margin="1dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onPopularTermClick"/>
@@ -96,8 +96,8 @@
             android:layout_height="wrap_content"
             android:text="Lunch"
             android:background="@drawable/popular_term_background"
-            android:padding="4dp"
-            android:layout_margin="2dp"
+            android:padding="2dp"
+            android:layout_margin="1dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onPopularTermClick"/>
@@ -106,8 +106,8 @@
             android:layout_height="wrap_content"
             android:text="Beginner"
             android:background="@drawable/popular_term_background"
-            android:padding="4dp"
-            android:layout_margin="2dp"
+            android:padding="2dp"
+            android:layout_margin="1dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onPopularTermClick"/>
@@ -116,8 +116,8 @@
             android:layout_height="wrap_content"
             android:text="Snacks"
             android:background="@drawable/popular_term_background"
-            android:padding="4dp"
-            android:layout_margin="2dp"
+            android:padding="2dp"
+            android:layout_margin="1dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onPopularTermClick"/>
@@ -126,11 +126,39 @@
             android:layout_height="wrap_content"
             android:text="Gluten-Free"
             android:background="@drawable/popular_term_background"
-            android:padding="4dp"
-            android:layout_margin="2dp"
+            android:padding="2dp"
+            android:layout_margin="1dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onPopularTermClick"/>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Filter Button -->
+            <ImageButton
+                android:id="@+id/filterButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_filter"
+                android:background="@drawable/button_search_custom"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
+                android:layout_marginStart="35dp" />
+
+            <!-- ExpandableListView -->
+            <ExpandableListView
+                android:id="@+id/expandableListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
