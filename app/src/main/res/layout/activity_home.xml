@@ -203,7 +203,7 @@
     <TextView
         android:id="@+id/tvChatGPTOutput"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="200dp"
         android:layout_below="@id/scrollViewFilterExpandable"
         android:background="#E1E1E1"
         android:padding="16dp"
@@ -245,11 +245,45 @@
         android:scaleType="fitCenter"/>
 
 
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#f5f5f5"
+        android:padding="8dp">
 
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_home"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
 
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_menu"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
 
-
-
+        <ImageButton
+            android:id="@+id/btnUserProfile"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_profile"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:padding="8dp" />
+    </LinearLayout>
 
 
 </RelativeLayout>
