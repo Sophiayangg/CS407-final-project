@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -95,36 +97,96 @@ public class Home extends AppCompatActivity {
 
         // Setup ExpandableListView
         expandableListView = findViewById(R.id.expandableListView);
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                // If the group is expanded, collapse it, otherwise expand it
+                if (parent.isGroupExpanded(groupPosition)) {
+                    parent.collapseGroup(groupPosition);
+                } else {
+                    parent.expandGroup(groupPosition);
+                }
+                return true; // This tells the OS you've handled this click
+            }
+        });
+        expandableListView.setVisibility(View.GONE);
+
         expandableListAdapter = new CustomExpandableListAdapter(this, new ArrayList<>(expandableListDetail.keySet()), expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
+        Button btnReset = findViewById(R.id.btnReset);
+        Button btnDone = findViewById(R.id.btnDone);
+        // Initially hide the buttons
+        btnReset.setVisibility(View.GONE);
+        btnDone.setVisibility(View.GONE);
+
         ImageButton filterButton = findViewById(R.id.filterButton);
+        final ScrollView scrollViewFilterExpandable = findViewById(R.id.scrollViewFilterExpandable);
+
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check the current expansion state of the ExpandableListView
-                boolean isExpanded = expandableListView.isGroupExpanded(0); // Assuming the first group is the main group
-
-                // Toggle the expansion state
-                if (isExpanded) {
-                    collapseExpandableListView();
+                if (expandableListView.getVisibility() == View.GONE) {
+                    // If currently hidden, show the ExpandableListView and collapse all groups
+                    expandableListView.setVisibility(View.VISIBLE);
+                    btnReset.setVisibility(View.VISIBLE);
+                    btnDone.setVisibility(View.VISIBLE);
+                    scrollViewFilterExpandable.setBackgroundResource(R.drawable.search_background); // Set desired background
+                    int groupCount = expandableListAdapter.getGroupCount();
+                    for (int i = 0; i < groupCount; i++) {
+                        expandableListView.collapseGroup(i);
+                    }
                 } else {
-                    expandExpandableListView();
+                    // If currently visible, hide the ExpandableListView
+                    expandableListView.setVisibility(View.GONE);
+                    btnReset.setVisibility(View.GONE);
+                    btnDone.setVisibility(View.GONE);
+                    scrollViewFilterExpandable.setBackgroundResource(android.R.color.transparent);
+
                 }
             }
         });
 
 
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // uncheck all checkboxes
+                expandableListAdapter.resetAllCheckBoxes();
+            }
+        });
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle done logic (e.g., apply filters and hide the ScrollView)
+                expandableListView.setVisibility(View.GONE);
+            }
+        });
+
+
+
     }
 
-    // Methods to expand and collapse the ExpandableListView
-    private void expandExpandableListView() {
-        expandableListView.expandGroup(0); // Expand the first group (main group)
-    }
-
-    private void collapseExpandableListView() {
-        expandableListView.collapseGroup(0); // Collapse the first group (main group)
-    }
+//    // Methods to expand and collapse the ExpandableListView
+//    private void expandExpandableListView() {
+//        int groupCount = expandableListAdapter.getGroupCount();
+//        //String s=Integer.toString(groupCount);
+//        //Log.d("show", s);
+//        for (int i = 0; i < groupCount; i++) {
+//            expandableListView.expandGroup(i);
+//        }
+//    }
+//
+//
+//    private void collapseExpandableListView() {
+//        int groupCount = expandableListAdapter.getGroupCount();
+//
+//        for (int i = 0; i < groupCount; i++) {
+//            expandableListView.collapseGroup(i);
+//        }
+//        //expandableListView.collapseGroup(0); // Collapse the first group (main group)
+//    }
 
     private void initializeData() {
         expandableListDetail = new HashMap<>();
@@ -235,27 +297,6 @@ public class Home extends AppCompatActivity {
         etSearch.setText(searchTerms);
     }
 
-//    public void showNoteDialog() {
-//        // Inflate the dialog layout
-//        View dialogView = LayoutInflater.from(this).inflate(R.layout.popup_note, null);
-//        EditText noteEditText = dialogView.findViewById(R.id.noteEditText);
-//        Button doneButton = dialogView.findViewById(R.id.doneButton);
-//
-//        AlertDialog dialog = new AlertDialog.Builder(this)
-//                .setView(dialogView)
-//                // additional dialog setup
-//                .create();
-//
-//        // Set the dialog position
-//        Window window = dialog.getWindow();
-//        if (window != null) {
-//            WindowManager.LayoutParams layoutParams = window.getAttributes();
-//            layoutParams.gravity = Gravity.BOTTOM;  // Set dialog gravity to bottom
-//            window.setAttributes(layoutParams);
-//        }
-//
-//        dialog.show();
-//
-//    }
+
 
 }

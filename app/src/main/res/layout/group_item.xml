@@ -10,11 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Group Name"
-        android:padding="8dp" />
+        android:textSize="12sp"
+        android:padding="2dp" />
 
     <ImageView
         android:id="@+id/ivExpandToggle"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_expand_toggle" />
 </LinearLayout>
