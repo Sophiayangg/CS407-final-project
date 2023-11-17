@@ -8,7 +8,6 @@ public class ApiResponse {
     @SerializedName("choices")
     private List<Choice> choices;
 
-    // Getter and setter for choices
     public List<Choice> getChoices() {
         return choices;
     }
@@ -17,17 +16,31 @@ public class ApiResponse {
         this.choices = choices;
     }
 
-    public static class Choice {
-        @SerializedName("text")
-        private String text;
 
-        // Getter and setter for text
-        public String getText() {
-            return text;
+    public static class Choice {
+        @SerializedName("message")
+        private Message message;
+
+        public Message getMessage() {
+            return message;
         }
 
-        public void setText(String text) {
-            this.text = text;
+        public void setMessage(Message message) {
+            this.message = message;
+        }
+    }
+
+    public static class Message {
+        @SerializedName("content")
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
         }
     }
 }
+

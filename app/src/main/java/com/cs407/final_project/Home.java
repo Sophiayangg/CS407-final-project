@@ -29,10 +29,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -40,6 +42,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class Home extends AppCompatActivity {
 
@@ -182,6 +185,14 @@ public class Home extends AppCompatActivity {
 
         //set an instance for OpenAIService
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.connectTimeout(80, TimeUnit.SECONDS); // Timeout for the connection to be established
+        httpClient.readTimeout(80, TimeUnit.SECONDS);    // Timeout for waiting to read data
+        httpClient.writeTimeout(80, TimeUnit.SECONDS);   // Timeout for waiting to write data
+
+// If you have a logging interceptor, you can add it here
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpClient.addInterceptor(logging);
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -223,12 +234,12 @@ public class Home extends AppCompatActivity {
         JsonArray messages = new JsonArray();
 
         JsonObject message = new JsonObject();
-        message.addProperty("role", "user"); // 'user' or 'system' or 'assistant'
-        message.addProperty("content", query); // Use the query as the message content
-        messages.add(message);
-
-        params.add("messages", messages);
         params.addProperty("model", "gpt-3.5-turbo"); // Specify the model
+
+        message.addProperty("role", "user");
+        message.addProperty("content", query);
+        messages.add(message);
+        params.add("messages", messages);
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), params.toString());
         Call<ApiResponse> call = service.postText(body);
@@ -240,29 +251,29 @@ public class Home extends AppCompatActivity {
                     TextView recipe = findViewById(R.id.tvChatGPTOutput);
                     ApiResponse apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getChoices() != null && !apiResponse.getChoices().isEmpty()) {
-                        // Get the text from the first choice
-                        String generatedText = apiResponse.getChoices().get(0).getText();
-                        recipe.setText(generatedText);
+                        ApiResponse.Choice choice = apiResponse.getChoices().get(0);
+                        if (choice != null && choice.getMessage() != null) {
+                            String generatedText = choice.getMessage().getContent();
+                            recipe.setText(generatedText);
+                        } else {
+                            recipe.setText("Error0");
+                        }
                     } else {
                         recipe.setText("Error1");
                     }
                 } else {
                     // Handle request error
                     TextView recipe = findViewById(R.id.tvChatGPTOutput);
-                    // Log the error response
-                    // Log error details
                     Log.e("API Error", "Error Code: " + response.code());
                     Log.e("API Error", "Error Message: " + response.message());
                     recipe.setText("Error: " + response.code() + " - " + response.message());
                     try {
-                        // Try to get more details from the error body
                         String errorBody = response.errorBody().string();
                         Log.e("API Error", "Error Body: " + errorBody);
-                        recipe.setText("Error: " + response.code() + " - " + response.message() +"-"+errorBody);
+                        recipe.setText("Error: " + response.code() + " - " + response.message() + "-" + errorBody);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 
