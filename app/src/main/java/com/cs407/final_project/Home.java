@@ -1,17 +1,13 @@
 package com.cs407.final_project;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -23,11 +19,27 @@ import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Home extends AppCompatActivity {
 
@@ -36,6 +48,10 @@ public class Home extends AppCompatActivity {
     private ExpandableListView expandableListView;
     private CustomExpandableListAdapter expandableListAdapter;
     private HashMap<String, List<String>> expandableListDetail;
+
+    private OpenAIApiService service;
+
+    private String apiKey = "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";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,9 +180,110 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        //set an instance for OpenAIService
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+                Request request = original.newBuilder()
+                        .header("Authorization", "Bearer " + apiKey)
+                        .method(original.method(), original.body())
+                        .build();
+                return chain.proceed(request);
+            }
+        });
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.openai.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())  // Make sure to include this
+                .build();
+
+        service = retrofit.create(OpenAIApiService.class);
+
+        //search button onclick
+        ImageButton btnSearch = findViewById(R.id.btnSearch);
+        EditText etSearch = findViewById(R.id.etSearch);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = etSearch.getText().toString();
+                if (!searchText.isEmpty()) {
+                    performSearch(searchText);
+                }
+            }
+        });
+    }
+
+    //perform search through chat gpt
+    private void performSearch(String query) {
+        JsonObject params = new JsonObject();
+        JsonArray messages = new JsonArray();
+
+        JsonObject message = new JsonObject();
+        message.addProperty("role", "user"); // 'user' or 'system' or 'assistant'
+        message.addProperty("content", query); // Use the query as the message content
+        messages.add(message);
+
+        params.add("messages", messages);
+        params.addProperty("model", "gpt-3.5-turbo"); // Specify the model
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), params.toString());
+        Call<ApiResponse> call = service.postText(body);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    // Handle successful response
+                    TextView recipe = findViewById(R.id.tvChatGPTOutput);
+                    ApiResponse apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getChoices() != null && !apiResponse.getChoices().isEmpty()) {
+                        // Get the text from the first choice
+                        String generatedText = apiResponse.getChoices().get(0).getText();
+                        recipe.setText(generatedText);
+                    } else {
+                        recipe.setText("Error1");
+                    }
+                } else {
+                    // Handle request error
+                    TextView recipe = findViewById(R.id.tvChatGPTOutput);
+                    // Log the error response
+                    // Log error details
+                    Log.e("API Error", "Error Code: " + response.code());
+                    Log.e("API Error", "Error Message: " + response.message());
+                    recipe.setText("Error: " + response.code() + " - " + response.message());
+                    try {
+                        // Try to get more details from the error body
+                        String errorBody = response.errorBody().string();
+                        Log.e("API Error", "Error Body: " + errorBody);
+                        recipe.setText("Error: " + response.code() + " - " + response.message() +"-"+errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Handle failure like network error
+                if (t instanceof SocketTimeoutException) {
+                    // Handle timeout specifically
+                    TextView recipe = findViewById(R.id.tvChatGPTOutput);
+                    recipe.setText("Request timed out. Please try again.");
+                }else{
+                    Log.e("API Failure", "Failure Message: " + t.getMessage());
+                    t.printStackTrace();
+                    TextView recipe = findViewById(R.id.tvChatGPTOutput);
+                    recipe.setText("Error3: " + t.getMessage());
+                }
+            }
+        });
 
     }
+
 
 //    // Methods to expand and collapse the ExpandableListView
 //    private void expandExpandableListView() {
@@ -188,115 +305,112 @@ public class Home extends AppCompatActivity {
 //        //expandableListView.collapseGroup(0); // Collapse the first group (main group)
 //    }
 
-    private void initializeData() {
-        expandableListDetail = new HashMap<>();
+        private void initializeData() {
+            expandableListDetail = new HashMap<>();
 
-        List<String> cuisineTypes = new ArrayList<>();
-        cuisineTypes.add("Italian");
-        cuisineTypes.add("Chinese");
-        cuisineTypes.add("American");
-        cuisineTypes.add("Mediterranean");
-        cuisineTypes.add("Mexican");
-        cuisineTypes.add("Indian");
-        expandableListDetail.put("Cuisine Type", cuisineTypes);
+            List<String> cuisineTypes = new ArrayList<>();
+            cuisineTypes.add("Italian");
+            cuisineTypes.add("Chinese");
+            cuisineTypes.add("American");
+            cuisineTypes.add("Mediterranean");
+            cuisineTypes.add("Mexican");
+            cuisineTypes.add("Indian");
+            expandableListDetail.put("Cuisine Type", cuisineTypes);
 
-        List<String> Restrictions = new ArrayList<>();
-        Restrictions.add("Vegetarian");
-        Restrictions.add("Vegan");
-        Restrictions.add("Gluten-Free");
-        Restrictions.add("Dairy-Free");
-        Restrictions.add("Keto");
-        expandableListDetail.put("Dietary Restrictions", Restrictions);
+            List<String> Restrictions = new ArrayList<>();
+            Restrictions.add("Vegetarian");
+            Restrictions.add("Vegan");
+            Restrictions.add("Gluten-Free");
+            Restrictions.add("Dairy-Free");
+            Restrictions.add("Keto");
+            expandableListDetail.put("Dietary Restrictions", Restrictions);
 
-        List<String> Type = new ArrayList<>();
-        Type.add("Breakfast");
-        Type.add("Lunch");
-        Type.add("Dinner");
-        Type.add("Snacks");
-        Type.add("Desserts");
-        expandableListDetail.put("Meal Type", Type);
+            List<String> Type = new ArrayList<>();
+            Type.add("Breakfast");
+            Type.add("Lunch");
+            Type.add("Dinner");
+            Type.add("Snacks");
+            Type.add("Desserts");
+            expandableListDetail.put("Meal Type", Type);
 
-        List<String> Time = new ArrayList<>();
-        Time.add("Quick (under 30 minutes)");
-        Time.add("Medium (30-60 minutes)");
-        Time.add("Lengthy (over 1 hour)");
-        expandableListDetail.put("Preparation Time", Time);
+            List<String> Time = new ArrayList<>();
+            Time.add("Quick (under 30 minutes)");
+            Time.add("Medium (30-60 minutes)");
+            Time.add("Lengthy (over 1 hour)");
+            expandableListDetail.put("Preparation Time", Time);
 
-        List<String> Method = new ArrayList<>();
-        Method.add("Baking");
-        Method.add("Grilling");
-        Method.add("Slow Cooking");
-        Method.add("No-Cook");
-        Method.add("Stir-Frying:");
-        expandableListDetail.put("Cooking Method", Method);
+            List<String> Method = new ArrayList<>();
+            Method.add("Baking");
+            Method.add("Grilling");
+            Method.add("Slow Cooking");
+            Method.add("No-Cook");
+            Method.add("Stir-Frying:");
+            expandableListDetail.put("Cooking Method", Method);
 
-        List<String> Nutri = new ArrayList<>();
-        Nutri.add("Low-Calorie");
-        Nutri.add("Low-Carb");
-        Nutri.add("High-Protein");
-        Nutri.add("Low-Fat");
-        expandableListDetail.put("Nutritional Information", Nutri);
+            List<String> Nutri = new ArrayList<>();
+            Nutri.add("Low-Calorie");
+            Nutri.add("Low-Carb");
+            Nutri.add("High-Protein");
+            Nutri.add("Low-Fat");
+            expandableListDetail.put("Nutritional Information", Nutri);
 
-        List<String> Seasonal = new ArrayList<>();
-        Seasonal.add("Spring");
-        Seasonal.add("Summer");
-        Seasonal.add("Fall");
-        Seasonal.add("Winter");
-        expandableListDetail.put("Seasonal/Local Ingredients", Seasonal);
+            List<String> Seasonal = new ArrayList<>();
+            Seasonal.add("Spring");
+            Seasonal.add("Summer");
+            Seasonal.add("Fall");
+            Seasonal.add("Winter");
+            expandableListDetail.put("Seasonal/Local Ingredients", Seasonal);
 
-        List<String> skill = new ArrayList<>();
-        skill.add("Beginner");
-        skill.add("Intermediate");
-        skill.add("Advanced");
-        expandableListDetail.put("Skill Level", skill);
+            List<String> skill = new ArrayList<>();
+            skill.add("Beginner");
+            skill.add("Intermediate");
+            skill.add("Advanced");
+            expandableListDetail.put("Skill Level", skill);
 
-        List<String> Rating = new ArrayList<>();
-        Rating.add("Top Rated");
-        Rating.add("Most Popular");
-        expandableListDetail.put("Rating and Popularity", Rating);
+            List<String> Rating = new ArrayList<>();
+            Rating.add("Top Rated");
+            Rating.add("Most Popular");
+            expandableListDetail.put("Rating and Popularity", Rating);
 
-        List<String> size = new ArrayList<>();
-        size.add("Single Serving");
-        size.add("Family Size");
-        expandableListDetail.put("Serving Size", size);
+            List<String> size = new ArrayList<>();
+            size.add("Single Serving");
+            size.add("Family Size");
+            expandableListDetail.put("Serving Size", size);
 
-        List<String> Allergens = new ArrayList<>();
-        Allergens.add("Gluten-Free");
-        Allergens.add("Nut-Free");
-        expandableListDetail.put("Allergens", Allergens);
-    }
-
-
-
-    // The click handler for popular search terms
-    public void onPopularTermClick(View view) {
-        if (view instanceof TextView) {
-            TextView textView = (TextView) view;
-            String term = textView.getText().toString();
-
-            // Check if the term is already selected
-            if (selectedSearchTerms.contains(term)) {
-                // If it is, remove it from the set and change the background to indicate it's not selected
-                selectedSearchTerms.remove(term);
-                textView.setBackground(getDrawable(R.drawable.popular_term_background));
-            } else {
-                // If it's not, add it to the set and change the background to indicate it's selected
-                selectedSearchTerms.add(term);
-                textView.setBackground(getDrawable(R.drawable.popular_term_background_selected));
-            }
-
-            updateSearchBar();
+            List<String> Allergens = new ArrayList<>();
+            Allergens.add("Gluten-Free");
+            Allergens.add("Nut-Free");
+            expandableListDetail.put("Allergens", Allergens);
         }
+
+
+        // The click handler for popular search terms
+        public void onPopularTermClick (View view){
+            if (view instanceof TextView) {
+                TextView textView = (TextView) view;
+                String term = textView.getText().toString();
+
+                // Check if the term is already selected
+                if (selectedSearchTerms.contains(term)) {
+                    // If it is, remove it from the set and change the background to indicate it's not selected
+                    selectedSearchTerms.remove(term);
+                    textView.setBackground(getDrawable(R.drawable.popular_term_background));
+                } else {
+                    // If it's not, add it to the set and change the background to indicate it's selected
+                    selectedSearchTerms.add(term);
+                    textView.setBackground(getDrawable(R.drawable.popular_term_background_selected));
+                }
+
+                updateSearchBar();
+            }
+        }
+
+        // Update the search bar with the selected terms
+        private void updateSearchBar () {
+            EditText etSearch = findViewById(R.id.etSearch);
+            // Join the selected terms with a space and set it to the search bar
+            String searchTerms = TextUtils.join(" ", selectedSearchTerms);
+            etSearch.setText(searchTerms);
+        }
+
     }
-
-    // Update the search bar with the selected terms
-    private void updateSearchBar() {
-        EditText etSearch = findViewById(R.id.etSearch);
-        // Join the selected terms with a space and set it to the search bar
-        String searchTerms = TextUtils.join(" ", selectedSearchTerms);
-        etSearch.setText(searchTerms);
-    }
-
-
-
-}

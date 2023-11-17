@@ -67,9 +67,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/button_search_custom"
-            android:src="@drawable/button"
+            android:padding="8dp"
             android:scaleType="fitCenter"
-            android:padding="8dp" />
+            android:src="@drawable/button" />
     </LinearLayout>
 
     <!-- Container for popular search terms -->
