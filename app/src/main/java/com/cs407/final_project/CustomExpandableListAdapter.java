@@ -1,5 +1,6 @@
 package com.cs407.final_project;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,10 +102,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final String childText = (String) getChild(groupPosition, childPosition);
-
         if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.child_item, null);
         }
 
@@ -116,13 +115,25 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 checkedStates.get(listGroupTitles.get(groupPosition)).set(childPosition, isChecked);
+                Log.d("Child Clicked", "Group: " + listGroupTitles.get(groupPosition) + " Child: " + listChildData.get(listGroupTitles.get(groupPosition)).get(childPosition));
             }
         });
-
         return convertView;
     }
 
-
+    public List<String> getCheckedItems() {
+        List<String> checkedItems = new ArrayList<>();
+        for (String group : listGroupTitles) {
+            List<Boolean> childCheckedStates = checkedStates.get(group);
+            List<String> children = listChildData.get(group);
+            for (int i = 0; i < children.size(); i++) {
+                if (childCheckedStates.get(i)) {
+                    checkedItems.add(children.get(i));
+                }
+            }
+        }
+        return checkedItems;
+    }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {

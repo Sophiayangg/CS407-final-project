@@ -54,7 +54,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "apikey";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +119,8 @@ public class Home extends AppCompatActivity {
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                String selectedGroup = expandableListDetail.keySet().toArray(new String[0])[groupPosition];
+                Log.d("Selected Group", selectedGroup);
                 // If the group is expanded, collapse it, otherwise expand it
                 if (parent.isGroupExpanded(groupPosition)) {
                     parent.collapseGroup(groupPosition);
@@ -128,11 +130,10 @@ public class Home extends AppCompatActivity {
                 return true; // This tells the OS you've handled this click
             }
         });
-        expandableListView.setVisibility(View.GONE);
 
+        expandableListView.setVisibility(View.GONE);
         expandableListAdapter = new CustomExpandableListAdapter(this, new ArrayList<>(expandableListDetail.keySet()), expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
-
         Button btnReset = findViewById(R.id.btnReset);
         Button btnDone = findViewById(R.id.btnDone);
         // Initially hide the buttons
@@ -140,7 +141,7 @@ public class Home extends AppCompatActivity {
         btnDone.setVisibility(View.GONE);
 
         ImageButton filterButton = findViewById(R.id.filterButton);
-        final ScrollView scrollViewFilterExpandable = findViewById(R.id.scrollViewFilterExpandable);
+        final LinearLayout filterAndExpandableLayout= findViewById(R.id.filterAndExpandableLayout);
 
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +151,8 @@ public class Home extends AppCompatActivity {
                     expandableListView.setVisibility(View.VISIBLE);
                     btnReset.setVisibility(View.VISIBLE);
                     btnDone.setVisibility(View.VISIBLE);
-                    scrollViewFilterExpandable.setBackgroundResource(R.drawable.search_background); // Set desired background
+                    filterButton.setVisibility(View.GONE);
+                    filterAndExpandableLayout.setBackgroundResource(R.drawable.search_background); // Set desired background
                     int groupCount = expandableListAdapter.getGroupCount();
                     for (int i = 0; i < groupCount; i++) {
                         expandableListView.collapseGroup(i);
@@ -160,11 +162,14 @@ public class Home extends AppCompatActivity {
                     expandableListView.setVisibility(View.GONE);
                     btnReset.setVisibility(View.GONE);
                     btnDone.setVisibility(View.GONE);
-                    scrollViewFilterExpandable.setBackgroundResource(android.R.color.transparent);
+                    filterAndExpandableLayout.setBackgroundResource(android.R.color.transparent);
 
                 }
             }
         });
+
+
+
 
 
         btnReset.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +242,12 @@ public class Home extends AppCompatActivity {
         params.addProperty("model", "gpt-3.5-turbo"); // Specify the model
 
         message.addProperty("role", "user");
-        message.addProperty("content", query);
+        //get checked filter
+        List<String> checkedItems = expandableListAdapter.getCheckedItems();
+        String checkedFilter = " " + TextUtils.join("; ", checkedItems);
+
+        String text = "Can you generate a recipe: "+query + checkedFilter;
+        message.addProperty("content", text);
         messages.add(message);
         params.add("messages", messages);
 
