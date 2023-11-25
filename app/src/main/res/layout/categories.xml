@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All Categories"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="40dp" />
+
+    <ImageView
+        android:id="@+id/Asian"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/Mexican"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:srcCompat="@drawable/img_5938"
+        tools:layout_editor_absoluteX="31dp" />
+
+    <ImageView
+        android:id="@+id/Indian"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/Korean"
+        app:layout_constraintTop_toBottomOf="@+id/Mexican"
+        app:srcCompat="@drawable/img_5940"
+        tools:layout_editor_absoluteX="31dp" />
+
+    <ImageView
+        android:id="@+id/Coffee_and_tea"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/Sandwich"
+        app:srcCompat="@drawable/img_5941"
+        tools:layout_editor_absoluteX="230dp" />
+
+    <ImageView
+        android:id="@+id/Mexican"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/Indian"
+        app:layout_constraintTop_toBottomOf="@+id/Asian"
+        app:srcCompat="@drawable/img_5942"
+        tools:layout_editor_absoluteX="31dp" />
+
+    <ImageView
+        android:id="@+id/Sandwich"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/Desserts"
+        app:srcCompat="@drawable/img_5943"
+        tools:layout_editor_absoluteX="230dp" />
+
+    <ImageView
+        android:id="@+id/Others"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Desserts"
+        app:srcCompat="@drawable/img_5945"
+        tools:layout_editor_absoluteX="230dp" />
+
+    <ImageView
+        android:id="@+id/Desserts"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintTop_toBottomOf="@+id/Sandwich"
+        app:srcCompat="@drawable/img_5946"
+        tools:layout_editor_absoluteX="230dp" />
+
+    <ImageView
+        android:id="@+id/Korean"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Indian"
+        app:srcCompat="@drawable/img_5944"
+        tools:layout_editor_absoluteX="31dp" />
+
+    <Button
+        android:id="@+id/AsianButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Asian"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="187dp" />
+
+    <Button
+        android:id="@+id/SandwichButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Sandwich"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="262dp"
+        tools:layout_editor_absoluteY="337dp" />
+
+    <Button
+        android:id="@+id/OthersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Others"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="262dp"
+        tools:layout_editor_absoluteY="637dp" />
+
+    <Button
+        android:id="@+id/DessertsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Desserts"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="262dp"
+        tools:layout_editor_absoluteY="487dp" />
+
+    <Button
+        android:id="@+id/IndianButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Indian"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="487dp" />
+
+    <Button
+        android:id="@+id/KoreanButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Korean"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="637dp" />
+
+    <Button
+        android:id="@+id/MexicanButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Mexican"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="337dp" />
+
+    <Button
+        android:id="@+id/Coffee_and_teaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Coffee_and_tea"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="253dp"
+        tools:layout_editor_absoluteY="187dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
