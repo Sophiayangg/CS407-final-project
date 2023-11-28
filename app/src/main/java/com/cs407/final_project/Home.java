@@ -54,7 +54,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "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";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,11 +247,10 @@ public class Home extends AppCompatActivity {
         String checkedFilter = " " + TextUtils.join("; ", checkedItems);
         String format = "Can you generate a recipe strictly following this format: \n" +
                 "<Name of the dish>\n" +
-                "Category: Italian/Chinese/American/Mediterranean/Mexican/Indian/Asia/Others\n" +
+                "Category: Asian/Drinks/Mexican/Western/Indian/Desserts/African/Others\n" +
                 "Introduction: blablabla\n"+
                 "Ingredients: blablabla\n" +
                 "Instructions: blablabla\n"+
-                "Note: blablabla\n" +
                 "Here is the requirements of the recipe: ";
         String text = format + query + checkedFilter;
         message.addProperty("content", text);
@@ -274,12 +273,10 @@ public class Home extends AppCompatActivity {
 
                             String category = generatedText.substring(generatedText.indexOf("Category:"),generatedText.indexOf("Introduction:"));
                             String ingredients = generatedText.substring(generatedText.indexOf("Ingredients:"),generatedText.indexOf("Instructions:"));
-                            String instructions = generatedText.substring(generatedText.indexOf("Instructions:"),generatedText.indexOf("Note:"));
-                            String note = generatedText.substring(generatedText.indexOf("Note:"));
+                            String instructions = generatedText.substring(generatedText.indexOf("Instructions:"));
                             Log.d("Category", category);
                             Log.d("Ingredients",ingredients);
                             Log.d("Instructions",instructions);
-                            Log.d("Note",note);
                             recipe.setText(generatedText);
 
                         } else {
