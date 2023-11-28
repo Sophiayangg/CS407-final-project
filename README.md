@@ -7,10 +7,11 @@ RecipeSaver is a user-friendly recipe management app designed to streamline the 
 
 __Things need to do!__
 
-  Add another page if the user forget the password in the login page 
-
-  API
+  Add another page if the user forget the password in the login page??
 
   when the window pops up,users cannot see what are being typed
+
+  connection and database
+
 
 
