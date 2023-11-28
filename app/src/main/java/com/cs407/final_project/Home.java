@@ -1,6 +1,9 @@
 package com.cs407.final_project;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.UUID;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -45,7 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class Home extends AppCompatActivity {
-
+    private int currentRecipeId = -1;
     // A set to keep track of selected search terms
     private Set<String> selectedSearchTerms = new HashSet<>();
     private ExpandableListView expandableListView;
@@ -54,7 +58,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "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";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,6 +235,81 @@ public class Home extends AppCompatActivity {
                 }
             }
         });
+        ImageButton btnLike = findViewById(R.id.btnLike);
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
+                Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
+
+                DatabaseHelper db = new DatabaseHelper(Home.this);
+
+                long newRecipeIdLong = db.addRecipe(recipe);
+                int newRecipeId = (int) newRecipeIdLong; // Cast to int
+
+                setCurrentRecipeId(newRecipeId);
+            }
+        });
+
+        noteButton.setOnClickListener(v -> {
+            // Find the EditText and Done button in the popup
+            EditText noteEditText = popupView.findViewById(R.id.noteEditText);
+            AppCompatButton doneButton = popupView.findViewById(R.id.doneButton);
+
+            // Set the click listener for the Done button
+            doneButton.setOnClickListener(view -> {
+                String noteContent = noteEditText.getText().toString();
+                try {
+                    int recipeId = getCurrentRecipeId(); // Get the current recipe ID
+                    // Save the note to the database
+                    Note note = new Note(recipeId, noteContent);
+                    //Note note = new Note(currentRecipeId, noteContent);
+                    DatabaseHelper db = new DatabaseHelper(this);
+                    db.addNote(note);
+                }catch (IllegalStateException e) {
+                    // Handle the case where no recipe is currently selected
+                }
+                // Dismiss the popup window after saving the note
+                popupWindow.dismiss();
+            });
+
+            // Show the PopupWindow anchored to the Note button
+            popupWindow.showAsDropDown(noteButton, 0, 0);
+        });
+
+
+
+    }
+
+    public void setCurrentRecipeId(int recipeId) {
+        this.currentRecipeId = recipeId;
+    }
+
+    public int getCurrentRecipeId() {
+        if (currentRecipeId == -1) {
+            // Handle the case where no current recipe ID is set
+            throw new IllegalStateException("Current recipe ID is not set.");
+        }
+        return currentRecipeId;
+    }
+
+
+    private Recipe parseRecipeFromTextView(TextView textView) {
+        String text = textView.getText().toString();
+
+        String name = text.substring(0, text.indexOf("\n")).trim();
+        String category = extractBetween(text, "Category: ", "\n");
+        String introduction = extractBetween(text, "Introduction: ", "\n");
+        String ingredients = extractBetween(text, "Ingredients: ", "\n");
+        String instructions = extractBetween(text, "Instructions: ", "\n");
+
+        return new Recipe(name, category, introduction, ingredients, instructions);
+    }
+
+    private String extractBetween(String text, String start, String end) {
+        int startIndex = text.indexOf(start) + start.length();
+        int endIndex = text.indexOf(end, startIndex);
+        return text.substring(startIndex, endIndex).trim();
     }
 
     //perform search through chat gpt
@@ -247,11 +326,10 @@ public class Home extends AppCompatActivity {
         String checkedFilter = " " + TextUtils.join("; ", checkedItems);
         String format = "Can you generate a recipe strictly following this format: \n" +
                 "<Name of the dish>\n" +
-                "Category: Italian/Chinese/American/Mediterranean/Mexican/Indian/Asia/Others\n" +
+                "Category: Asian/Drinks/Mexican/Western/Indian/Desserts/African/Others\n" +
                 "Introduction: blablabla\n"+
                 "Ingredients: blablabla\n" +
                 "Instructions: blablabla\n"+
-                "Note: blablabla\n" +
                 "Here is the requirements of the recipe: ";
         String text = format + query + checkedFilter;
         message.addProperty("content", text);
@@ -274,12 +352,10 @@ public class Home extends AppCompatActivity {
 
                             String category = generatedText.substring(generatedText.indexOf("Category:"),generatedText.indexOf("Introduction:"));
                             String ingredients = generatedText.substring(generatedText.indexOf("Ingredients:"),generatedText.indexOf("Instructions:"));
-                            String instructions = generatedText.substring(generatedText.indexOf("Instructions:"),generatedText.indexOf("Note:"));
-                            String note = generatedText.substring(generatedText.indexOf("Note:"));
+                            String instructions = generatedText.substring(generatedText.indexOf("Instructions:"));
                             Log.d("Category", category);
                             Log.d("Ingredients",ingredients);
                             Log.d("Instructions",instructions);
-                            Log.d("Note",note);
                             recipe.setText(generatedText);
 
                         } else {

@@ -21,12 +21,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/shopping_list_text"
+        android:id="@+id/Ingredients_list_text"
         android:layout_width="285dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="Shopping List"
+        android:text="Ingredients List"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,12 +75,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/recipe_text"
+        android:id="@+id/instruction_text"
         android:layout_width="354dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="306dp"
-        android:text="Recipe"
+        android:text="Instruction"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/recipe_intro_text"
+        android:id="@+id/instruction_intro_text"
         android:layout_width="354dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"

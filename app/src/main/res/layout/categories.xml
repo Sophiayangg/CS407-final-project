@@ -28,7 +28,7 @@
         android:id="@+id/Indian"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/Korean"
+        app:layout_constraintBottom_toTopOf="@+id/African"
         app:layout_constraintTop_toBottomOf="@+id/Mexican"
         app:srcCompat="@drawable/img_5940"
         tools:layout_editor_absoluteX="31dp" />
@@ -77,13 +77,13 @@
         tools:layout_editor_absoluteX="230dp" />
 
     <ImageView
-        android:id="@+id/Korean"
+        android:id="@+id/African"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Indian"
-        app:srcCompat="@drawable/img_5944"
+        app:srcCompat="@drawable/img"
         tools:layout_editor_absoluteX="31dp" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -101,7 +101,7 @@
         android:id="@+id/SandwichButton"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="Sandwich"
+        android:text="western"
         android:textSize="8sp"
         tools:layout_editor_absoluteX="262dp"
         tools:layout_editor_absoluteY="337dp" />
@@ -141,7 +141,7 @@
         android:id="@+id/KoreanButton"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="Korean"
+        android:text="African"
         android:textSize="8sp"
         tools:layout_editor_absoluteX="61dp"
         tools:layout_editor_absoluteY="637dp" />
@@ -161,7 +161,7 @@
         android:id="@+id/Coffee_and_teaButton"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:text="Coffee_and_tea"
+        android:text="Drinks"
         android:textSize="8sp"
         tools:layout_editor_absoluteX="253dp"
         tools:layout_editor_absoluteY="187dp" />
