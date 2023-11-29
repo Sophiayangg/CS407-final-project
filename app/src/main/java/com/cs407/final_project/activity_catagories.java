@@ -18,12 +18,12 @@ public class activity_catagories extends AppCompatActivity {
 
         setupCategoryButton(R.id.AsianButton, "Asian");
         setupCategoryButton(R.id.MexicanButton, "Mexican");
-        setupCategoryButton(R.id.SandwichButton, "Sandwich");
+        setupCategoryButton(R.id.WesternButton, "Western");
         setupCategoryButton(R.id.OthersButton, "Others");
         setupCategoryButton(R.id.DessertsButton, "Desserts");
         setupCategoryButton(R.id.IndianButton, "Indian");
-        setupCategoryButton(R.id.KoreanButton, "Korean");
-        setupCategoryButton(R.id.Coffee_and_teaButton, "Coffee_and_tea");
+        setupCategoryButton(R.id.AfricanButton, "African");
+        setupCategoryButton(R.id.DrinksButton, "Drinks");
 
     }
 
