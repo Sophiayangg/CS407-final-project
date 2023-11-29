@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Final_project"
         tools:targetApi="31">
+        <activity android:name=".activity_catagories"></activity>
+
         <activity
             android:name=".Home"
             android:exported="false" />
