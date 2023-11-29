@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -58,7 +59,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "blablabla";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,6 +236,16 @@ public class Home extends AppCompatActivity {
                 }
             }
         });
+
+        ImageButton btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
         ImageButton btnLike = findViewById(R.id.btnLike);
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
