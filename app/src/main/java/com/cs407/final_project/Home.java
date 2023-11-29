@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -250,8 +251,11 @@ public class Home extends AppCompatActivity {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
                 Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
+                Toast.makeText(Home.this, "Recipe liked!", Toast.LENGTH_SHORT).show();
+
 
                 DatabaseHelper db = new DatabaseHelper(Home.this);
 
@@ -259,6 +263,8 @@ public class Home extends AppCompatActivity {
                 int newRecipeId = (int) newRecipeIdLong; // Cast to int
 
                 setCurrentRecipeId(newRecipeId);
+                // Display a Toast message
+
             }
         });
 
@@ -282,10 +288,13 @@ public class Home extends AppCompatActivity {
                 }
                 // Dismiss the popup window after saving the note
                 popupWindow.dismiss();
+                Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
             });
 
             // Show the PopupWindow anchored to the Note button
             popupWindow.showAsDropDown(noteButton, 0, 0);
+            // Display a Toast message
+
         });
 
 
