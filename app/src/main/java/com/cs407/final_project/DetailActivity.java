@@ -26,18 +26,31 @@ public class DetailActivity extends AppCompatActivity {
         TextView instructionText = findViewById(R.id.instruction_intro_text);
         TextView notesText = findViewById(R.id.notes);
 
-        nameText.setText(recipe.getName());
-        ingredientText.setText(recipe.getIngredients());
-        instructionText.setText(recipe.getInstructions());
-        // Print the recipe details to the Logcat
-        Log.d("RecipeDetail", "Name: " + recipe.getName());
-        Log.d("RecipeDetail", "Ingredients: " + recipe.getIngredients());
-        Log.d("RecipeDetail", "Instructions: " + recipe.getInstructions());
+        if (recipe != null) {
+            nameText.setText(recipe.getName());
+            ingredientText.setText(recipe.getIngredients());
+            instructionText.setText(recipe.getInstructions());
+            StringBuilder notesStringBuilder = new StringBuilder();
+            for (Note note : notes) {
+                notesStringBuilder.append(note.getContent()).append("\n");
+            }
+            notesText.setText(notesStringBuilder.toString());
+        } else {
+            nameText.setText("");
+            ingredientText.setText("Details not available.");
+            instructionText.setText("Details not available.");
+            notesText.setText("Details not available.");
 
-        StringBuilder notesStringBuilder = new StringBuilder();
-        for (Note note : notes) {
-            notesStringBuilder.append(note.getContent()).append("\n");
         }
-        notesText.setText(notesStringBuilder.toString());
+
+//        nameText.setText(recipe.getName());
+//        ingredientText.setText(recipe.getIngredients());
+//        instructionText.setText(recipe.getInstructions());
+        // Print the recipe details to the Logcat
+//        Log.d("RecipeDetail", "Name: " + recipe.getName());
+//        Log.d("RecipeDetail", "Ingredients: " + recipe.getIngredients());
+//        Log.d("RecipeDetail", "Instructions: " + recipe.getInstructions());
+
+
     }
 }

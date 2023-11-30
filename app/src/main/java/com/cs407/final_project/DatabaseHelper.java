@@ -200,6 +200,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
     }
+    public void deleteRecipe(int recipeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_RECIPES, KEY_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.close();
+    }
+
 
 
 }
