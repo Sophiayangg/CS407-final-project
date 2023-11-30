@@ -114,9 +114,9 @@ public class Home extends AppCompatActivity {
 
         // Show the PopupWindow anchored to the Note button
         ImageButton noteButton = findViewById(R.id.btnNote);
-        noteButton.setOnClickListener(v -> {
-            popupWindow.showAsDropDown(noteButton, 0, 0);
-        });
+//        noteButton.setOnClickListener(v -> {
+//            popupWindow.showAsDropDown(noteButton, 0, 0);
+//        });
 
         initializeData();
 
@@ -254,15 +254,26 @@ public class Home extends AppCompatActivity {
 
                 TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
                 Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
-                Toast.makeText(Home.this, "Recipe liked!", Toast.LENGTH_SHORT).show();
-
-
                 DatabaseHelper db = new DatabaseHelper(Home.this);
 
-                long newRecipeIdLong = db.addRecipe(recipe);
-                int newRecipeId = (int) newRecipeIdLong; // Cast to int
+                long recipeId = db.addRecipe(recipe);
+                if (recipeId == -1) {
+                    Toast.makeText(Home.this, "Error adding recipe.", Toast.LENGTH_LONG).show();
+                } else if (recipeId == -2) {
+                    Toast.makeText(Home.this, "This recipe already exists.", Toast.LENGTH_LONG).show();
+                } else {
+                    int newRecipeId = (int) recipeId; // Cast to int
+                    setCurrentRecipeId(newRecipeId);
+                    Toast.makeText(Home.this, "Recipe added successfully.", Toast.LENGTH_LONG).show();
+                }
 
-                setCurrentRecipeId(newRecipeId);
+
+
+
+                //long newRecipeIdLong = db.addRecipe(recipe);
+
+
+
                 // Display a Toast message
 
             }
@@ -275,20 +286,38 @@ public class Home extends AppCompatActivity {
 
             // Set the click listener for the Done button
             doneButton.setOnClickListener(view -> {
+                // Get the current recipe details
+                //TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
+                //Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
+
+                DatabaseHelper db = new DatabaseHelper(Home.this);
+                //long newRecipeIdLong = db.addRecipe(recipe);
+                //int newRecipeId = (int) newRecipeIdLong; // Cast to int
+
                 String noteContent = noteEditText.getText().toString();
-                try {
-                    int recipeId = getCurrentRecipeId(); // Get the current recipe ID
-                    // Save the note to the database
+                int recipeId = getCurrentRecipeId();
+                Log.d("note", noteContent);
+                if (db.isRecipeLiked(recipeId)) {
+                    // If the recipe is already liked, insert to note directly
                     Note note = new Note(recipeId, noteContent);
-                    //Note note = new Note(currentRecipeId, noteContent);
-                    DatabaseHelper db = new DatabaseHelper(this);
                     db.addNote(note);
-                }catch (IllegalStateException e) {
-                    // Handle the case where no recipe is currently selected
+                    //db.updateNoteForRecipe(recipeId, noteContent);
+                    Toast.makeText(Home.this, "Note updated for the liked recipe!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // If the recipe is not liked, save the recipe and the note
+                    TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
+                    Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
+                    long newRecipeIdLong = db.addRecipe(recipe);
+                    int newRecipeId = (int) newRecipeIdLong;
+
+                    //db.addRecipe(recipe);
+                    Note note = new Note(newRecipeId, noteContent);
+                    db.addNote(note);
+                    Toast.makeText(Home.this, "Recipe liked and note saved!", Toast.LENGTH_SHORT).show();
                 }
                 // Dismiss the popup window after saving the note
                 popupWindow.dismiss();
-                Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
             });
 
             // Show the PopupWindow anchored to the Note button
@@ -306,18 +335,21 @@ public class Home extends AppCompatActivity {
     }
 
     public int getCurrentRecipeId() {
-        if (currentRecipeId == -1) {
-            // Handle the case where no current recipe ID is set
-            throw new IllegalStateException("Current recipe ID is not set.");
-        }
+//        if (currentRecipeId == -1) {
+//            // Handle the case where no current recipe ID is set
+//            throw new IllegalStateException("Current recipe ID is not set.");
+//        }
         return currentRecipeId;
     }
 
 
     private Recipe parseRecipeFromTextView(TextView textView) {
         String text = textView.getText().toString();
-
-        String name = extractName(text, "Name of the dish:", "Category:");
+        //Log.d("all", text);
+        int categoryIndex = text.indexOf("Category:");
+        String name = categoryIndex != -1 ? text.substring(0, categoryIndex).trim() : "";
+        // Remove "Name of the dish: " if it's part of the name
+        name = name.replace("Name of the dish: ", "").trim();
         String category = extractBetween(text, "Category:", "Introduction:").trim();
         String introduction = extractBetween(text, "Introduction:", "Ingredients:").trim();
         String ingredients = extractBetween(text, "Ingredients:", "Instructions:").trim();

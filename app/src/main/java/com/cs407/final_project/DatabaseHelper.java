@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,15 +65,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long addRecipe(Recipe recipe) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, recipe.getName());
-        values.put(KEY_CATEGORY, recipe.getCategory());
-        values.put(KEY_INTRODUCTION, recipe.getIntroduction());
-        values.put(KEY_INGREDIENTS, recipe.getIngredients());
-        values.put(KEY_INSTRUCTIONS, recipe.getInstructions());
+        // Check if the recipe already exists in the database
+        String[] columns = {KEY_ID};
+        String selection = KEY_NAME + " = ?"; // You can add more criteria if needed
+        String[] selectionArgs = {recipe.getName()};
+        Cursor cursor = db.query(TABLE_RECIPES, columns, selection, selectionArgs, null, null, null);
 
-        // Inserting Row
-        long recipeId = db.insert(TABLE_RECIPES, null, values);
+        long recipeId = -1;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            if (idIndex != -1) {
+                recipeId = cursor.getLong(idIndex);
+                cursor.close();
+                db.close();
+                return -2; // Special value indicating the recipe already exists
+            }
+        }
+        cursor.close();
+
+        if (recipeId == -1) {
+            // Recipe does not exist, insert new row
+            ContentValues values = new ContentValues();
+            values.put(KEY_NAME, recipe.getName());
+            values.put(KEY_CATEGORY, recipe.getCategory());
+            values.put(KEY_INTRODUCTION, recipe.getIntroduction());
+            values.put(KEY_INGREDIENTS, recipe.getIngredients());
+            values.put(KEY_INSTRUCTIONS, recipe.getInstructions());
+
+            recipeId = db.insert(TABLE_RECIPES, null, values);
+        }
+
         db.close(); // Closing database connection
         return recipeId;
     }
@@ -161,6 +185,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return notesList;
     }
+
+    public boolean isRecipeLiked(int recipeId) {
+        if (recipeId!=1){
+        SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID}, KEY_ID + "=?", new String[]{String.valueOf(recipeId)}, null, null, null);
+        boolean isLiked = cursor.getCount() > 0;
+        cursor.close();
+        return isLiked;}
+        else{
+            String error="error";
+            Log.d("error",error);
+            return false;
+        }
+
+    }
+
 
 }
 
