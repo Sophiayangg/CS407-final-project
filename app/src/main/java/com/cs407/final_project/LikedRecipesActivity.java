@@ -35,7 +35,7 @@ public class LikedRecipesActivity extends AppCompatActivity {
         };
 
         // Inside your loop where you are listing the recipes
-        for (int i = 0; i < likedRecipes.size(); i++) {
+        for (int i = 0; i < likedRecipes.size()&& i < items.length; i++) {
             Recipe recipe = likedRecipes.get(i);
             items[i].setText(recipe.getName());
             items[i].setOnClickListener(new View.OnClickListener() {

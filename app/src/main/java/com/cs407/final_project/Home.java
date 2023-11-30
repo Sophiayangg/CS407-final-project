@@ -60,7 +60,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "blablabla";
+    private String apiKey = "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";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -317,19 +317,35 @@ public class Home extends AppCompatActivity {
     private Recipe parseRecipeFromTextView(TextView textView) {
         String text = textView.getText().toString();
 
-        String name = text.substring(0, text.indexOf("\n")).trim();
-        String category = extractBetween(text, "Category: ", "\n");
-        String introduction = extractBetween(text, "Introduction: ", "\n");
-        String ingredients = extractBetween(text, "Ingredients: ", "\n");
-        String instructions = extractBetween(text, "Instructions: ", "\n");
+        String name = extractName(text, "Name of the dish:", "Category:");
+        String category = extractBetween(text, "Category:", "Introduction:").trim();
+        String introduction = extractBetween(text, "Introduction:", "Ingredients:").trim();
+        String ingredients = extractBetween(text, "Ingredients:", "Instructions:").trim();
+        String instructions = text.substring(text.indexOf("Instructions:") + "Instructions:".length()).trim();
+
+        Log.d("RecipeName", name);
+        Log.d("RecipeCategory", category);
+        Log.d("RecipeIntroduction", introduction);
+        Log.d("RecipeIngredients", ingredients);
+        Log.d("RecipeInstructions", instructions);
 
         return new Recipe(name, category, introduction, ingredients, instructions);
     }
 
+    private String extractName(String text, String startMarker, String endMarker) {
+        int start = text.indexOf(startMarker);
+        int end = text.indexOf(endMarker, start);
+
+        if (start != -1 && end != -1 && end > start) {
+            start += startMarker.length(); // Move start index to end of the startMarker
+            return text.substring(start, end).trim();
+        }
+        return ""; // Return empty string if not found or in wrong order
+    }
     private String extractBetween(String text, String start, String end) {
         int startIndex = text.indexOf(start) + start.length();
         int endIndex = text.indexOf(end, startIndex);
-        return text.substring(startIndex, endIndex).trim();
+        return (startIndex < endIndex && startIndex != -1) ? text.substring(startIndex, endIndex).trim() : "";
     }
 
     //perform search through chat gpt
@@ -373,9 +389,9 @@ public class Home extends AppCompatActivity {
                             String category = generatedText.substring(generatedText.indexOf("Category:"),generatedText.indexOf("Introduction:"));
                             String ingredients = generatedText.substring(generatedText.indexOf("Ingredients:"),generatedText.indexOf("Instructions:"));
                             String instructions = generatedText.substring(generatedText.indexOf("Instructions:"));
-                            Log.d("Category", category);
-                            Log.d("Ingredients",ingredients);
-                            Log.d("Instructions",instructions);
+                            //Log.d("Category", category);
+                            //Log.d("Ingredients",ingredients);
+                            //Log.d("Instructions",instructions);
                             recipe.setText(generatedText);
 
                         } else {

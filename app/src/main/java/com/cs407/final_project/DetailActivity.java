@@ -1,6 +1,7 @@
 package com.cs407.final_project;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,10 @@ public class DetailActivity extends AppCompatActivity {
         nameText.setText(recipe.getName());
         ingredientText.setText(recipe.getIngredients());
         instructionText.setText(recipe.getInstructions());
+        // Print the recipe details to the Logcat
+        Log.d("RecipeDetail", "Name: " + recipe.getName());
+        Log.d("RecipeDetail", "Ingredients: " + recipe.getIngredients());
+        Log.d("RecipeDetail", "Instructions: " + recipe.getInstructions());
 
         StringBuilder notesStringBuilder = new StringBuilder();
         for (Note note : notes) {
