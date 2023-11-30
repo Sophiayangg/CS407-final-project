@@ -10,7 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -43,6 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_INGREDIENTS + " TEXT,"
                 + KEY_INSTRUCTIONS + " TEXT" + ")";
 
+
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_RECIPE_ID + " INTEGER,"
@@ -67,38 +70,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Check if the recipe already exists in the database
         String[] columns = {KEY_ID};
-        String selection = KEY_NAME + " = ?"; // You can add more criteria if needed
+        String selection = KEY_NAME + " = ?";
         String[] selectionArgs = {recipe.getName()};
         Cursor cursor = db.query(TABLE_RECIPES, columns, selection, selectionArgs, null, null, null);
 
-        long recipeId = -1;
-
         if (cursor != null && cursor.moveToFirst()) {
-            int idIndex = cursor.getColumnIndex(KEY_ID);
-            if (idIndex != -1) {
-                recipeId = cursor.getLong(idIndex);
-                cursor.close();
-                db.close();
-                return -2; // Special value indicating the recipe already exists
-            }
+            cursor.close();
+            db.close();
+            return -2; // Recipe already exists
         }
         cursor.close();
 
-        if (recipeId == -1) {
-            // Recipe does not exist, insert new row
-            ContentValues values = new ContentValues();
-            values.put(KEY_NAME, recipe.getName());
-            values.put(KEY_CATEGORY, recipe.getCategory());
-            values.put(KEY_INTRODUCTION, recipe.getIntroduction());
-            values.put(KEY_INGREDIENTS, recipe.getIngredients());
-            values.put(KEY_INSTRUCTIONS, recipe.getInstructions());
+        // Insert new recipe
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, recipe.getName());
+        values.put(KEY_CATEGORY, String.join(",", recipe.getCategory())); // Store categories as a single string
+        values.put(KEY_INTRODUCTION, recipe.getIntroduction());
+        values.put(KEY_INGREDIENTS, recipe.getIngredients());
+        values.put(KEY_INSTRUCTIONS, recipe.getInstructions());
 
-            recipeId = db.insert(TABLE_RECIPES, null, values);
-        }
-
-        db.close(); // Closing database connection
+        long recipeId = db.insert(TABLE_RECIPES, null, values);
+        db.close();
         return recipeId;
     }
+
 
     public void addNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -115,20 +110,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Recipe> getRecipesByCategory(String category) {
         List<Recipe> recipeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        Log.d("LikedRecipesActivity", "getRecipesByCategory called for category: " + category); // Confirm method call
 
-        Cursor cursor = db.query(TABLE_RECIPES, new String[] { KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS }, KEY_CATEGORY + "=?", new String[] { category }, null, null, null, null);
+
+        // Fetch all recipes
+        Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
-                Recipe recipe = new Recipe(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                recipe.setId(cursor.getInt(0));
-                recipeList.add(recipe);
+
+                int categoryIdIndex = cursor.getColumnIndex(KEY_CATEGORY);
+
+                if (categoryIdIndex != -1) {  // Check if the category index is valid
+                    String categories = cursor.getString(categoryIdIndex);
+                    //Log.d("Categories", "Fetched Categories: " + categories); // Log the categories
+                    String[] categoryArray = categories.split("/");
+                    for (String cat : categoryArray) {
+                        //Log.d("CategoryCheck", "Checking Category: " + cat.trim()); // Log each category being checked
+                        if (cat.trim().equalsIgnoreCase(category.trim())) {
+                            //Log.d("CategoryMatch", "Match found for " + cat.trim()); // Log a successful match
+                            int nameIndex = cursor.getColumnIndex(KEY_NAME);
+                            int introIndex = cursor.getColumnIndex(KEY_INTRODUCTION);
+                            int ingredientIndex = cursor.getColumnIndex(KEY_INGREDIENTS);
+                            int instructionIndex = cursor.getColumnIndex(KEY_INSTRUCTIONS);
+                            int idIndex = cursor.getColumnIndex(KEY_ID);
+
+                            if (nameIndex != -1 && introIndex != -1 && ingredientIndex != -1 && instructionIndex != -1 && idIndex != -1) { // Check if all indices are valid
+                                Recipe recipe = new Recipe(
+                                        cursor.getString(nameIndex),
+                                        categories,
+                                        cursor.getString(introIndex),
+                                        cursor.getString(ingredientIndex),
+                                        cursor.getString(instructionIndex));
+                                recipe.setId(cursor.getInt(idIndex));
+                                recipeList.add(recipe);
+                                break; // Exit the loop once a match is found
+                            }
+                        }
+                    }
+                }
+                else {
+                    Log.d("LikedRecipesActivity", "Category column index is -1");
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return recipeList;
     }
+
+
+
+
 
     public Recipe getRecipeById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -203,6 +237,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteRecipe(int recipeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_RECIPES, KEY_ID + " = ?", new String[]{String.valueOf(recipeId)});
+        db.delete(TABLE_NOTES, KEY_RECIPE_ID + " = ?", new String[]{String.valueOf(recipeId)});
         db.close();
     }
 

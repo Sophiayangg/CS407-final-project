@@ -62,7 +62,6 @@ public class Home extends AppCompatActivity {
 
     private String apiKey = "blablabla";
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -351,6 +350,8 @@ public class Home extends AppCompatActivity {
         // Remove "Name of the dish: " if it's part of the name
         name = name.replace("Name of the dish: ", "").trim();
         String category = extractBetween(text, "Category:", "Introduction:").trim();
+        //String[] categories = category.split("/"); // Splitting the categories
+
         String introduction = extractBetween(text, "Introduction:", "Ingredients:").trim();
         String ingredients = extractBetween(text, "Ingredients:", "Instructions:").trim();
         String instructions = text.substring(text.indexOf("Instructions:") + "Instructions:".length()).trim();
