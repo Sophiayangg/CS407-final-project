@@ -60,7 +60,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "blablabla";
+    private String apiKey = "blablbla";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
