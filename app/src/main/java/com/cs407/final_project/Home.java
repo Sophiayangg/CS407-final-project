@@ -60,7 +60,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "blablabla";
+    private String apiKey = "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";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +120,7 @@ public class Home extends AppCompatActivity {
         initializeData();
 
         // Setup ExpandableListView
+        LinearLayout filterAndButtonsLayout = findViewById(R.id.filterAndButtonsLayout);
         expandableListView = findViewById(R.id.expandableListView);
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -136,7 +137,7 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        expandableListView.setVisibility(View.GONE);
+        filterAndButtonsLayout.setVisibility(View.GONE);
         expandableListAdapter = new CustomExpandableListAdapter(this, new ArrayList<>(expandableListDetail.keySet()), expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
         Button btnReset = findViewById(R.id.btnReset);
@@ -151,9 +152,9 @@ public class Home extends AppCompatActivity {
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (expandableListView.getVisibility() == View.GONE) {
+                if (filterAndButtonsLayout.getVisibility() == View.GONE) {
                     // If currently hidden, show the ExpandableListView and collapse all groups
-                    expandableListView.setVisibility(View.VISIBLE);
+                    filterAndButtonsLayout.setVisibility(View.VISIBLE);
                     btnReset.setVisibility(View.VISIBLE);
                     btnDone.setVisibility(View.VISIBLE);
                     filterButton.setVisibility(View.GONE);
@@ -164,7 +165,7 @@ public class Home extends AppCompatActivity {
                     }
                 } else {
                     // If currently visible, hide the ExpandableListView
-                    expandableListView.setVisibility(View.GONE);
+                    filterAndButtonsLayout.setVisibility(View.GONE);
                     btnReset.setVisibility(View.GONE);
                     btnDone.setVisibility(View.GONE);
                     filterAndExpandableLayout.setBackgroundResource(android.R.color.transparent);
@@ -189,7 +190,9 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Handle done logic (e.g., apply filters and hide the ScrollView)
-                expandableListView.setVisibility(View.GONE);
+                filterAndButtonsLayout.setVisibility(View.GONE);
+                filterButton.setVisibility(View.VISIBLE);
+                filterAndExpandableLayout.setBackgroundResource(android.R.color.transparent);
             }
         });
 
@@ -344,14 +347,10 @@ public class Home extends AppCompatActivity {
 
     private Recipe parseRecipeFromTextView(TextView textView) {
         String text = textView.getText().toString();
-        //Log.d("all", text);
-        int categoryIndex = text.indexOf("Category:");
-        String name = categoryIndex != -1 ? text.substring(0, categoryIndex).trim() : "";
-        // Remove "Name of the dish: " if it's part of the name
-        name = name.replace("Name of the dish: ", "").trim();
+        int indexOfCategory = text.indexOf("Category:");
+        String name = text.substring(0,indexOfCategory).trim();
         String category = extractBetween(text, "Category:", "Introduction:").trim();
         //String[] categories = category.split("/"); // Splitting the categories
-
         String introduction = extractBetween(text, "Introduction:", "Ingredients:").trim();
         String ingredients = extractBetween(text, "Ingredients:", "Instructions:").trim();
         String instructions = text.substring(text.indexOf("Instructions:") + "Instructions:".length()).trim();
@@ -394,11 +393,12 @@ public class Home extends AppCompatActivity {
         List<String> checkedItems = expandableListAdapter.getCheckedItems();
         String checkedFilter = " " + TextUtils.join("; ", checkedItems);
         String format = "Can you generate a recipe strictly following this format: \n" +
-                "<Name of the dish>\n" +
-                "Category: Asian/Drinks/Mexican/Western/Indian/Desserts/African/Others\n" +
-                "Introduction: blablabla\n"+
-                "Ingredients: blablabla\n" +
-                "Instructions: blablabla\n"+
+                "Name of the dish: blablabla\n\n" +
+                "Category: <Please Strictly choose from Asian/Drinks/Mexican/Western/Indian/Desserts/African/Others>\n\n" +
+                "Introduction: blablabla\n\n"+
+                "Ingredients: blablabla\n\n" +
+                "Instructions: blablabla\n\n"+
+                "Additional Tips: blablabla\n\n"+
                 "Here is the requirements of the recipe: ";
         String text = format + query + checkedFilter;
         message.addProperty("content", text);
@@ -418,14 +418,9 @@ public class Home extends AppCompatActivity {
                         ApiResponse.Choice choice = apiResponse.getChoices().get(0);
                         if (choice != null && choice.getMessage() != null) {
                             String generatedText = choice.getMessage().getContent();
-
-                            String category = generatedText.substring(generatedText.indexOf("Category:"),generatedText.indexOf("Introduction:"));
-                            String ingredients = generatedText.substring(generatedText.indexOf("Ingredients:"),generatedText.indexOf("Instructions:"));
-                            String instructions = generatedText.substring(generatedText.indexOf("Instructions:"));
-                            //Log.d("Category", category);
-                            //Log.d("Ingredients",ingredients);
-                            //Log.d("Instructions",instructions);
-                            recipe.setText(generatedText);
+                            String name = extractBetween(generatedText, "Name of the dish:", "Category:").trim();
+                            String Output = name + "\n\n" + generatedText.substring(generatedText.indexOf("Category:"));
+                            recipe.setText(Output);
 
                         } else {
                             recipe.setText("Error0");

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="#f5f5f5">
+    
 
     <TextView
         android:id="@+id/tvGreeting"
@@ -155,17 +156,24 @@
         <!-- ExpandableListView -->
 
         <!-- Layout for buttons -->
+        <LinearLayout
+            android:id="@+id/filterAndButtonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchSection"
+            android:orientation="vertical">
 
         <ExpandableListView
             android:id="@+id/expandableListView"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="300dp"
             android:layout_marginTop="35dp"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="0.5dp"
             android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
         <LinearLayout
+            android:id="@+id/resetDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -193,12 +201,13 @@
                 android:padding="4dp" />
 
         </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <ScrollView
         android:id="@+id/recipeScroll"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_below="@id/filterAndExpandableLayout"
         android:layout_marginTop="20dp"
         android:background="#E1E1E1">
@@ -287,6 +296,5 @@
             android:scaleType="fitCenter"
             android:padding="8dp" />
     </LinearLayout>
-
 
 </RelativeLayout>
