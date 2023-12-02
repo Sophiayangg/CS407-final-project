@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="#3E567C">
+        android:background="#F8E16C">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

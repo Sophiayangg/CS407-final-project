@@ -8,6 +8,8 @@
     <color name="backgroundColor">#FFFFFF</color> <!-- White for the background -->
     <color name="default_color">#D3D3D3</color> <!-- Light grey for default -->
     <color name="pressed_color">#A9A9A9</color>
+    <color name="background_color">#ADD8E6</color>
+
 
     <color name="checkbox_color_child">#2196F3</color>
 

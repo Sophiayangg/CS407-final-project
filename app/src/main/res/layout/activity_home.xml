@@ -18,7 +18,7 @@
         android:shadowRadius="2"
         android:layout_marginTop="24dp"
         android:layout_centerHorizontal="true"
-         />
+        />
 
     <TextView
         android:id="@+id/tvCookingPrompt"
@@ -47,153 +47,153 @@
         android:layout_marginTop="16dp"
         android:padding="8dp">
 
-    <!-- Search bar and button -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Find your food..."
-            android:background="@drawable/search_background"
-            android:padding="12dp" />
-
-        <ImageButton
-            android:id="@+id/btnSearch"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/button_search_custom"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/button" />
-    </LinearLayout>
-
-    <!-- Container for popular search terms -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start|center_vertical"
-        android:layout_marginTop="8dp">
-
-        <!-- Repeat this block for each popular term you want to display -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Popular"
-            android:background="@drawable/popular_term_background"
-            android:padding="2dp"
-            android:layout_margin="1dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onPopularTermClick"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lunch"
-            android:background="@drawable/popular_term_background"
-            android:padding="2dp"
-            android:layout_margin="1dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onPopularTermClick"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Beginner"
-            android:background="@drawable/popular_term_background"
-            android:padding="2dp"
-            android:layout_margin="1dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onPopularTermClick"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Snacks"
-            android:background="@drawable/popular_term_background"
-            android:padding="2dp"
-            android:layout_margin="1dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onPopularTermClick"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gluten-Free"
-            android:background="@drawable/popular_term_background"
-            android:padding="2dp"
-            android:layout_margin="1dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onPopularTermClick"/>
-
-    </LinearLayout>
-</LinearLayout>
+        <!-- Search bar and button -->
         <LinearLayout
-            android:id="@+id/filterAndExpandableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/searchSection"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <!-- Filter Button -->
-            <ImageButton
-                android:id="@+id/filterButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_filter"
-                android:background="@drawable/button_search_custom"
-                android:scaleType="fitCenter"
-                android:padding="4dp"
-                android:layout_marginStart="35dp" />
-
-            <!-- ExpandableListView -->
-
-            <!-- Layout for buttons -->
-
-            <ExpandableListView
-                android:id="@+id/expandableListView"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginTop="35dp"
-                android:divider="@android:color/darker_gray"
-                android:dividerHeight="0.5dp"
-                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:padding="8dp">
+                android:layout_weight="1"
+                android:hint="Find your food..."
+                android:background="@drawable/search_background"
+                android:padding="12dp" />
 
-                <!-- Reset Button -->
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnReset"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="70dp"
-                    android:text="Reset"
-                    android:background="@drawable/button_rounded_bg"
-                    android:textSize="10sp"
-                    android:padding="4dp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnDone"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:text="Done"
-                    android:background="@drawable/button_rounded_bg"
-                    android:textSize="10sp"
-                    android:padding="4dp" />
-
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/btnSearch"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/button_search_custom"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/button" />
         </LinearLayout>
+
+        <!-- Container for popular search terms -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start|center_vertical"
+            android:layout_marginTop="8dp">
+
+            <!-- Repeat this block for each popular term you want to display -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Popular"
+                android:background="@drawable/popular_term_background"
+                android:padding="2dp"
+                android:layout_margin="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onPopularTermClick"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lunch"
+                android:background="@drawable/popular_term_background"
+                android:padding="2dp"
+                android:layout_margin="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onPopularTermClick"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Beginner"
+                android:background="@drawable/popular_term_background"
+                android:padding="2dp"
+                android:layout_margin="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onPopularTermClick"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Snacks"
+                android:background="@drawable/popular_term_background"
+                android:padding="2dp"
+                android:layout_margin="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onPopularTermClick"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gluten-Free"
+                android:background="@drawable/popular_term_background"
+                android:padding="2dp"
+                android:layout_margin="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onPopularTermClick"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/filterAndExpandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchSection"
+        android:orientation="vertical">
+
+        <!-- Filter Button -->
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_filter"
+            android:background="@drawable/button_search_custom"
+            android:scaleType="fitCenter"
+            android:padding="4dp"
+            android:layout_marginStart="35dp" />
+
+        <!-- ExpandableListView -->
+
+        <!-- Layout for buttons -->
+
+        <ExpandableListView
+            android:id="@+id/expandableListView"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="35dp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <!-- Reset Button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnReset"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="70dp"
+                android:text="Reset"
+                android:background="@drawable/button_rounded_bg"
+                android:textSize="10sp"
+                android:padding="4dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDone"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="Done"
+                android:background="@drawable/button_rounded_bg"
+                android:textSize="10sp"
+                android:padding="4dp" />
+
+        </LinearLayout>
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/recipeScroll"
