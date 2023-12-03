@@ -17,10 +17,12 @@ import java.util.stream.Collectors;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "RecipeDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_RECIPES = "recipes";
     private static final String TABLE_NOTES = "notes";
+
+    private static final String TABLE_HISTORY = "histories";
 
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
@@ -45,6 +47,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_INGREDIENTS + " TEXT,"
                 + KEY_INSTRUCTIONS + " TEXT" + ")";
 
+        String CREATE_HISTORY_TABLE = "CREATE TABLE " + TABLE_HISTORY + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_NAME + " TEXT,"
+                + KEY_CATEGORY + " TEXT,"
+                + KEY_INTRODUCTION + " TEXT,"
+                + KEY_INGREDIENTS + " TEXT,"
+                + KEY_INSTRUCTIONS + " TEXT" + ")";
 
         String CREATE_NOTES_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -54,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_RECIPES_TABLE);
         db.execSQL(CREATE_NOTES_TABLE);
+        db.execSQL(CREATE_HISTORY_TABLE);
     }
 
     @Override
@@ -61,6 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
         // Create tables again
         onCreate(db);
     }
@@ -107,6 +118,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    public long addHistory(Recipe recipe) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Check if the recipe already exists in the database
+        String[] columns = {KEY_ID};
+        String selection = KEY_NAME + " = ?";
+        String[] selectionArgs = {recipe.getName()};
+        Cursor cursor = db.query(TABLE_HISTORY, columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            cursor.close();
+            db.close();
+            return -2; // Recipe already exists
+        }
+        cursor.close();
+
+        // Insert new recipe
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, recipe.getName());
+        values.put(KEY_CATEGORY, String.join(",", recipe.getCategory())); // Store categories as a single string
+        values.put(KEY_INTRODUCTION, recipe.getIntroduction());
+        values.put(KEY_INGREDIENTS, recipe.getIngredients());
+        values.put(KEY_INSTRUCTIONS, recipe.getInstructions());
+
+        long recipeId = db.insert(TABLE_HISTORY, null, values);
+        db.close();
+        return recipeId;
+    }
+
+    public List<Recipe> getHistories(){
+        List<Recipe> recipeList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Fetch all recipes
+        Cursor cursor = db.query(TABLE_HISTORY, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                int categoryIdIndex = cursor.getColumnIndex(KEY_CATEGORY);
+                int nameIndex = cursor.getColumnIndex(KEY_NAME);
+                int introIndex = cursor.getColumnIndex(KEY_INTRODUCTION);
+                int ingredientIndex = cursor.getColumnIndex(KEY_INGREDIENTS);
+                int instructionIndex = cursor.getColumnIndex(KEY_INSTRUCTIONS);
+                int idIndex = cursor.getColumnIndex(KEY_ID);
+
+                if (categoryIdIndex != -1 && nameIndex != -1 && introIndex != -1 && ingredientIndex != -1 && instructionIndex != -1 && idIndex != -1) { // Check if all indices are valid
+                    Recipe recipe = new Recipe(
+                            cursor.getString(nameIndex),
+                            cursor.getString(categoryIdIndex),
+                            cursor.getString(introIndex),
+                            cursor.getString(ingredientIndex),
+                            cursor.getString(instructionIndex));
+                    recipe.setId(cursor.getInt(idIndex));
+                    recipeList.add(recipe);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return recipeList;
+    }
     public List<Recipe> getRecipesByCategory(String category) {
         List<Recipe> recipeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -196,6 +269,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return recipe;
     }
+
+    public Recipe getHistoryById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_HISTORY, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+
+        Recipe recipe = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            int nameIndex = cursor.getColumnIndex(KEY_NAME);
+            int categoryIndex = cursor.getColumnIndex(KEY_CATEGORY);
+            int introductionIndex = cursor.getColumnIndex(KEY_INTRODUCTION);
+            int ingredientsIndex = cursor.getColumnIndex(KEY_INGREDIENTS);
+            int instructionsIndex = cursor.getColumnIndex(KEY_INSTRUCTIONS);
+
+            if (idIndex != -1 && nameIndex != -1 && categoryIndex != -1 && introductionIndex != -1 && ingredientsIndex != -1 && instructionsIndex != -1) {
+                // Extract values from the cursor
+                String name = cursor.getString(nameIndex);
+                String category = cursor.getString(categoryIndex);
+                String introduction = cursor.getString(introductionIndex);
+                String ingredients = cursor.getString(ingredientsIndex);
+                String instructions = cursor.getString(instructionsIndex);
+
+                // Use your constructor to create a Recipe object
+                recipe = new Recipe(name, category, introduction, ingredients, instructions);
+                recipe.setId(cursor.getInt(idIndex));
+            }
+
+            cursor.close();
+        }
+
+        return recipe;
+    }
     public List<Note> getNotesByRecipeId(int recipeId) {
         List<Note> notesList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -220,20 +326,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return notesList;
     }
 
-    public boolean isRecipeLiked(int recipeId) {
-        if (recipeId!=1){
-        SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID}, KEY_ID + "=?", new String[]{String.valueOf(recipeId)}, null, null, null);
-        boolean isLiked = cursor.getCount() > 0;
-        cursor.close();
-        return isLiked;}
-        else{
-            String error="error";
-            Log.d("error",error);
-            return false;
-        }
-
-    }
     public void deleteRecipe(int recipeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_RECIPES, KEY_ID + " = ?", new String[]{String.valueOf(recipeId)});
@@ -241,7 +333,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
-
+    public void deleteHistory(int historyId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_HISTORY, KEY_ID + " = ?", new String[]{String.valueOf(historyId)});
+        db.delete(TABLE_NOTES, KEY_RECIPE_ID + " = ?", new String[]{String.valueOf(historyId)});
+        db.close();
+    }
 }
 

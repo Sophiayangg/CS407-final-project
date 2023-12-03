@@ -60,7 +60,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "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";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,6 +237,7 @@ public class Home extends AppCompatActivity {
                 if (!searchText.isEmpty()) {
                     performSearch(searchText);
                 }
+
             }
         });
 
@@ -245,6 +246,16 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Home.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnProfile = findViewById(R.id.btnUserProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO need to change it back to profile page
+                Intent intent = new Intent(Home.this, Histories.class);
                 startActivity(intent);
             }
         });
@@ -269,15 +280,9 @@ public class Home extends AppCompatActivity {
                     Toast.makeText(Home.this, "Recipe added successfully.", Toast.LENGTH_LONG).show();
                 }
 
-
-
-
                 //long newRecipeIdLong = db.addRecipe(recipe);
 
-
-
                 // Display a Toast message
-
             }
         });
 
@@ -285,38 +290,19 @@ public class Home extends AppCompatActivity {
             // Find the EditText and Done button in the popup
             EditText noteEditText = popupView.findViewById(R.id.noteEditText);
             AppCompatButton doneButton = popupView.findViewById(R.id.doneButton);
-
+            DatabaseHelper db = new DatabaseHelper(Home.this);
             // Set the click listener for the Done button
             doneButton.setOnClickListener(view -> {
-                // Get the current recipe details
-                //TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
-                //Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
-
-                DatabaseHelper db = new DatabaseHelper(Home.this);
-                //long newRecipeIdLong = db.addRecipe(recipe);
-                //int newRecipeId = (int) newRecipeIdLong; // Cast to int
 
                 String noteContent = noteEditText.getText().toString();
                 int recipeId = getCurrentRecipeId();
                 Log.d("note", noteContent);
-                if (db.isRecipeLiked(recipeId)) {
-                    // If the recipe is already liked, insert to note directly
-                    Note note = new Note(recipeId, noteContent);
-                    db.addNote(note);
-                    //db.updateNoteForRecipe(recipeId, noteContent);
-                    Toast.makeText(Home.this, "Note updated for the liked recipe!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // If the recipe is not liked, save the recipe and the note
-                    TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
-                    Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
-                    long newRecipeIdLong = db.addRecipe(recipe);
-                    int newRecipeId = (int) newRecipeIdLong;
 
-                    //db.addRecipe(recipe);
-                    Note note = new Note(newRecipeId, noteContent);
-                    db.addNote(note);
-                    Toast.makeText(Home.this, "Recipe liked and note saved!", Toast.LENGTH_SHORT).show();
-                }
+                Note note = new Note(recipeId, noteContent);
+                db.addNote(note);
+                //db.updateNoteForRecipe(recipeId, noteContent);
+                Toast.makeText(Home.this, "Note updated for the recipe!", Toast.LENGTH_SHORT).show();
+
                 // Dismiss the popup window after saving the note
                 popupWindow.dismiss();
                 //Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
@@ -327,9 +313,6 @@ public class Home extends AppCompatActivity {
             // Display a Toast message
 
         });
-
-
-
     }
 
     public void setCurrentRecipeId(int recipeId) {
@@ -337,10 +320,6 @@ public class Home extends AppCompatActivity {
     }
 
     public int getCurrentRecipeId() {
-//        if (currentRecipeId == -1) {
-//            // Handle the case where no current recipe ID is set
-//            throw new IllegalStateException("Current recipe ID is not set.");
-//        }
         return currentRecipeId;
     }
 
@@ -364,16 +343,6 @@ public class Home extends AppCompatActivity {
         return new Recipe(name, category, introduction, ingredients, instructions);
     }
 
-    private String extractName(String text, String startMarker, String endMarker) {
-        int start = text.indexOf(startMarker);
-        int end = text.indexOf(endMarker, start);
-
-        if (start != -1 && end != -1 && end > start) {
-            start += startMarker.length(); // Move start index to end of the startMarker
-            return text.substring(start, end).trim();
-        }
-        return ""; // Return empty string if not found or in wrong order
-    }
     private String extractBetween(String text, String start, String end) {
         int startIndex = text.indexOf(start) + start.length();
         int endIndex = text.indexOf(end, startIndex);
@@ -394,7 +363,7 @@ public class Home extends AppCompatActivity {
         String checkedFilter = " " + TextUtils.join("; ", checkedItems);
         String format = "Can you generate a recipe strictly following this format: \n" +
                 "Name of the dish: blablabla\n\n" +
-                "Category: <Please Strictly choose from Asian/Drinks/Mexican/Western/Indian/Desserts/African/Others>\n\n" +
+                "Category: <Category must be strictly chosen from this list of category: Asian/Drinks/Mexican/Western/Indian/Desserts/African/Others>\n\n" +
                 "Introduction: blablabla\n\n"+
                 "Ingredients: blablabla\n\n" +
                 "Instructions: blablabla\n\n"+
@@ -422,6 +391,20 @@ public class Home extends AppCompatActivity {
                             String Output = name + "\n\n" + generatedText.substring(generatedText.indexOf("Category:"));
                             recipe.setText(Output);
 
+                            TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
+                            Recipe recipe1 = parseRecipeFromTextView(tvChatGPTOutput);
+                            DatabaseHelper db = new DatabaseHelper(Home.this);
+
+                            long recipeId = db.addHistory(recipe1);
+                            if (recipeId == -1) {
+                                Toast.makeText(Home.this, "Error adding recipe.", Toast.LENGTH_LONG).show();
+                            } else if (recipeId == -2) {
+                                Toast.makeText(Home.this, "This recipe already exists.", Toast.LENGTH_LONG).show();
+                            } else {
+                                int newRecipeId = (int) recipeId; // Cast to int
+                                setCurrentRecipeId(newRecipeId);
+                                Toast.makeText(Home.this, "Recipe added successfully.", Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             recipe.setText("Error0");
                         }
@@ -462,26 +445,6 @@ public class Home extends AppCompatActivity {
 
     }
 
-
-//    // Methods to expand and collapse the ExpandableListView
-//    private void expandExpandableListView() {
-//        int groupCount = expandableListAdapter.getGroupCount();
-//        //String s=Integer.toString(groupCount);
-//        //Log.d("show", s);
-//        for (int i = 0; i < groupCount; i++) {
-//            expandableListView.expandGroup(i);
-//        }
-//    }
-//
-//
-//    private void collapseExpandableListView() {
-//        int groupCount = expandableListAdapter.getGroupCount();
-//
-//        for (int i = 0; i < groupCount; i++) {
-//            expandableListView.collapseGroup(i);
-//        }
-//        //expandableListView.collapseGroup(0); // Collapse the first group (main group)
-//    }
 
         private void initializeData() {
             expandableListDetail = new HashMap<>();
