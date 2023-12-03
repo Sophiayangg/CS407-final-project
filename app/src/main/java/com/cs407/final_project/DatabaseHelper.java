@@ -326,6 +326,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return notesList;
     }
 
+    public boolean isRecipeLiked(int recipeId) {
+        if (recipeId!=1){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID}, KEY_ID + "=?", new String[]{String.valueOf(recipeId)}, null, null, null);
+            boolean isLiked = cursor.getCount() > 0;
+            cursor.close();
+            return isLiked;}
+        else{
+            String error="error";
+            Log.d("error",error);
+            return false;
+        }
+
+    }
     public void deleteRecipe(int recipeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_RECIPES, KEY_ID + " = ?", new String[]{String.valueOf(recipeId)});

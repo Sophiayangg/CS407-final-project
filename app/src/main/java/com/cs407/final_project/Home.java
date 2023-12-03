@@ -60,8 +60,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
-
+    private String apiKey = "blablabla";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -293,26 +292,45 @@ public class Home extends AppCompatActivity {
             DatabaseHelper db = new DatabaseHelper(Home.this);
             // Set the click listener for the Done button
             doneButton.setOnClickListener(view -> {
+                // Get the current recipe details
+                //TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
+                //Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
+
+                //DatabaseHelper db = new DatabaseHelper(Home.this);
+                //long newRecipeIdLong = db.addRecipe(recipe);
+                //int newRecipeId = (int) newRecipeIdLong; // Cast to int
 
                 String noteContent = noteEditText.getText().toString();
                 int recipeId = getCurrentRecipeId();
                 Log.d("note", noteContent);
+                if (db.isRecipeLiked(recipeId)) {
+                    // If the recipe is already liked, insert to note directly
+                    Note note = new Note(recipeId, noteContent);
+                    db.addNote(note);
+                    //db.updateNoteForRecipe(recipeId, noteContent);
+                    Toast.makeText(Home.this, "Note updated for the liked recipe!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // If the recipe is not liked, save the recipe and the note
+                    TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
+                    Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
+                    long newRecipeIdLong = db.addRecipe(recipe);
+                    int newRecipeId = (int) newRecipeIdLong;
 
-                Note note = new Note(recipeId, noteContent);
-                db.addNote(note);
-                //db.updateNoteForRecipe(recipeId, noteContent);
-                Toast.makeText(Home.this, "Note updated for the recipe!", Toast.LENGTH_SHORT).show();
-
+                    //db.addRecipe(recipe);
+                    Note note = new Note(newRecipeId, noteContent);
+                    db.addNote(note);
+                    Toast.makeText(Home.this, "Recipe liked and note saved!", Toast.LENGTH_SHORT).show();
+                }
                 // Dismiss the popup window after saving the note
                 popupWindow.dismiss();
                 //Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
             });
-
-            // Show the PopupWindow anchored to the Note button
+        // Show the PopupWindow anchored to the Note button
             popupWindow.showAsDropDown(noteButton, 0, 0);
             // Display a Toast message
 
         });
+
     }
 
     public void setCurrentRecipeId(int recipeId) {
