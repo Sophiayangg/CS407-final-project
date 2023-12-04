@@ -11,19 +11,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:text="Please reenter \n  the new info"
-        android:textSize="32sp"
+        android:layout_marginTop="40dp"
+        android:text="Please reenter the new info"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="380dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cooking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reenter_text" />
+
     <TextView
         android:id="@+id/RecipeSaverId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="310dp"
         android:text="RecipeSaver!"
         android:textSize="38sp"
         android:textStyle="bold"
@@ -37,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="15dp"
@@ -47,7 +58,6 @@
         app:layout_constraintTop_toBottomOf="@+id/RecipeSaverId"
         tools:layout_editor_absoluteX="25dp">
 
-        <!-- Row for First Name and Last Name -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,15 +114,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/edittext_rounded_bg"
             android:hint="Password*"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:inputType="textPassword"
             android:padding="10dp"
             android:textColor="#333333"
             android:textColorHint="#888888" />
+
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -128,5 +139,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rectangle_container"
         app:layout_constraintVertical_bias="0.5" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
