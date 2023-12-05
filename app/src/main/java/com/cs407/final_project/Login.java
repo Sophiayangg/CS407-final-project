@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -57,11 +58,19 @@ public class Login extends AppCompatActivity {
                 SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("users",Context.MODE_PRIVATE,null);
                 DBHelper dbHelper = new DBHelper(sqLiteDatabase);
                 if (dbHelper.authenticateUser(email, password)) {
-                    String firstName = dbHelper.getFirstName(email); // Use the new method to get the first name
+                    String[] name = dbHelper.getFirstLastName(email);
+                    String firstName = name[0];
+                    String lastName = name[1];
 
                     if (firstName != null && !firstName.isEmpty()) {
+                        //save user email
+                        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("firstname",firstName);
+                        editor.putString("lastname",lastName);
+                        editor.apply();
                         Intent intent = new Intent(Login.this, Home.class);
-                        intent.putExtra("USER_NAME", firstName);
                         startActivity(intent);
                         finish(); // Close the login activity
                     } else {

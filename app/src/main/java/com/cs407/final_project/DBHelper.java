@@ -33,6 +33,19 @@ public class DBHelper{
         //sqLiteDatabase.execSQL("INSERT INTO users (firstname,lastname, email, password) VALUES (?,?,?,?)",
                 //new String[]{firstname,lastname, email,password});
     }
+
+    public void deleteUser(String email){
+
+        int deleted = sqLiteDatabase.delete("users", "email = ?",
+                new String[]{email});
+        // Check if deletion was successful
+        if (deleted > 0) {
+            Log.d("Database", deleted + " rows deleted successfully.");
+        } else {
+            Log.e("Database", "Deletion failed.");
+        }
+    }
+
     public boolean authenticateUser(String email, String passwordInput){
         try{
             Cursor c = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE email = ?",
@@ -55,21 +68,23 @@ public class DBHelper{
         return false;
     }
 
-    public String getFirstName(String email) {
+    public String[] getFirstLastName(String email) {
         String firstName = null;
+        String lastName = null;
         Cursor cursor = null;
         try {
             // Prepare query to select the first name of the user with the given email
-            String query = "SELECT firstname FROM users WHERE email = ?";
+            String query = "SELECT firstname, lastname FROM users WHERE email = ?";
             cursor = sqLiteDatabase.rawQuery(query, new String[]{email});
 
             // Check if the cursor has at least one result
             if (cursor.moveToFirst()) {
                 int firstNameIndex = cursor.getColumnIndex("firstname");
-
+                int lastNameIndex = cursor.getColumnIndex("lastname");
                 // Check if the index is valid
-                if (firstNameIndex != -1) {
+                if (firstNameIndex != -1 && lastNameIndex != -1) {
                     firstName = cursor.getString(firstNameIndex);
+                    lastName = cursor.getString(lastNameIndex);
                 } else {
                     // Handle the case where the column doesn't exist
                     // This could throw an exception or return null
@@ -84,7 +99,7 @@ public class DBHelper{
                 cursor.close();
             }
         }
-        return firstName;
+        String[] fullName = {firstName,lastName};
+        return fullName;
     }
-
 }

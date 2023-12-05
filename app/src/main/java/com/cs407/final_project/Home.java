@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,7 +73,8 @@ public class Home extends AppCompatActivity {
         tvCookingPrompt.setVisibility(View.INVISIBLE);
 
         // Set the text from the intent or default
-        String name = getIntent().getStringExtra("USER_NAME");
+        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+        String name = preferences.getString("name", "");
         tvGreeting.setText(name != null ? "Hello, " + name + "!" : "Hello, User!");
 
         // Apply the scale up and fade in animation to tvGreeting
@@ -253,8 +255,7 @@ public class Home extends AppCompatActivity {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO need to change it back to profile page
-                Intent intent = new Intent(Home.this, Histories.class);
+                Intent intent = new Intent(Home.this, Profile.class);
                 startActivity(intent);
             }
         });
