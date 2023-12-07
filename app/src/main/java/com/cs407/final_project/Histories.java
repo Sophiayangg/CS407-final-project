@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +21,30 @@ public class Histories extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_recipe);
+        ImageButton btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Histories.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnProfile = findViewById(R.id.btnUserProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Histories.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton btnHome = findViewById(R.id.btnHome);
+
+        // Set the OnClickListener for Home Button
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(Histories.this, Home.class);
+            startActivity(intent);
+        });
 
         // Set up the Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);

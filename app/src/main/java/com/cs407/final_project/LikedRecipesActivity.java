@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +29,32 @@ public class LikedRecipesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.liked_recipe); // Ensure this layout has a ScrollView
+        setContentView(R.layout.liked_recipe);
+        // Ensure this layout has a ScrollView
+        ImageButton btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LikedRecipesActivity.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnProfile = findViewById(R.id.btnUserProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LikedRecipesActivity.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton btnHome = findViewById(R.id.btnHome);
+
+        // Set the OnClickListener for Home Button
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(LikedRecipesActivity.this, Home.class);
+            startActivity(intent);
+        });
 
         // Set up the Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);

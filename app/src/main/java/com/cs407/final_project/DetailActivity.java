@@ -1,7 +1,10 @@
 package com.cs407.final_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,30 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_list);
+        ImageButton btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailActivity.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnProfile = findViewById(R.id.btnUserProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailActivity.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton btnHome = findViewById(R.id.btnHome);
+
+        // Set the OnClickListener for Home Button
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(DetailActivity.this, Home.class);
+            startActivity(intent);
+        });
 
         int recipeId = getIntent().getIntExtra("RECIPE_ID", -1);
         DatabaseHelper db = new DatabaseHelper(this);

@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "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";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -259,6 +259,14 @@ public class Home extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ImageButton btnHome = findViewById(R.id.btnHome);
+
+        // Set the OnClickListener for Home Button
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(Home.this, Home.class);
+            startActivity(intent);
+        });
+
 
         ImageButton btnLike = findViewById(R.id.btnLike);
         btnLike.setOnClickListener(new View.OnClickListener() {

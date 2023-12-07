@@ -3,6 +3,7 @@ package com.cs407.final_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -22,6 +23,30 @@ public class activity_catagories extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.categories);
+        ImageButton btnMenu = findViewById(R.id.btnMenu);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_catagories.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnProfile = findViewById(R.id.btnUserProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_catagories.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton btnHome = findViewById(R.id.btnHome);
+
+        // Set the OnClickListener for Home Button
+        btnHome.setOnClickListener(view -> {
+            Intent intent = new Intent(activity_catagories.this, Home.class);
+            startActivity(intent);
+        });
         // Replace 'your_layout' with your actual layout
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);

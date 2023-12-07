@@ -24,6 +24,7 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+
         Button saveButton = findViewById(R.id.svae_btn);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
