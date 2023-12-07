@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,9 +15,10 @@ public class HistoryRecipeDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_recipe_detail);
-        int historyId = getIntent().getIntExtra("HISTORY_ID", -1);
-        DatabaseHelper db = new DatabaseHelper(this);
 
+        int historyId = getIntent().getIntExtra("HISTORY_ID", -1);
+        Log.d("HistoryID", "" + historyId);
+        DatabaseHelper db = new DatabaseHelper(this);
         Recipe recipe = db.getHistoryById(historyId); // Implement this method in DatabaseHelper
         List<Note> notes = db.getNotesByRecipeId(historyId); // Implement this method in DatabaseHelper
 
@@ -39,8 +41,6 @@ public class HistoryRecipeDetail extends AppCompatActivity {
             ingredientText.setText("Details not available.");
             instructionText.setText("Details not available.");
             notesText.setText("Details not available.");
-
         }
-
     }
 }

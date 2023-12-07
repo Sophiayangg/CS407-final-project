@@ -42,15 +42,5 @@ public class DetailActivity extends AppCompatActivity {
             notesText.setText("Details not available.");
 
         }
-
-//        nameText.setText(recipe.getName());
-//        ingredientText.setText(recipe.getIngredients());
-//        instructionText.setText(recipe.getInstructions());
-        // Print the recipe details to the Logcat
-//        Log.d("RecipeDetail", "Name: " + recipe.getName());
-//        Log.d("RecipeDetail", "Ingredients: " + recipe.getIngredients());
-//        Log.d("RecipeDetail", "Instructions: " + recipe.getInstructions());
-
-
     }
 }

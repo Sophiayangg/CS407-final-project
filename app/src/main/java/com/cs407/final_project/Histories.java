@@ -118,9 +118,9 @@ public class Histories extends AppCompatActivity {
 
             // Click listener for each TextView
             recipeNameTextView.setOnClickListener(view -> {
-                Intent intent = new Intent(Histories.this, DetailActivity.class);
-                intent.putExtra("RECIPE_ID", recipe.getId());
-                startActivity(intent);
+                Intent intent1 = new Intent(Histories.this, HistoryRecipeDetail.class);
+                intent1.putExtra("HISTORY_ID", recipe.getId());
+                startActivity(intent1);
             });
 
             // Long click listener for deletion
