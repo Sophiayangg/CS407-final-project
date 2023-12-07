@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Drop Shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#1A000000"/>
+            <corners android:radius="8dp"/>
+            <padding android:bottom="2dp" android:right="2dp"/>
+        </shape>
+    </item>
+
+    <!-- Card background with colored line accent -->
+    <item android:left="1dp" android:right="1dp" android:top="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/>
+            <corners android:radius="8dp"/>
+            <!-- Colored line accent -->
+            <stroke android:width="4dp" android:color="#FF0000"/> <!-- Replace with desired color -->
+        </shape>
+    </item>
+</layer-list>
