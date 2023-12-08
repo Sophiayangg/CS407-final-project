@@ -88,7 +88,7 @@ public class Histories extends AppCompatActivity {
 
             // Click listener for each TextView
             recipeNameTextView.setOnClickListener(view -> {
-                Intent intent = new Intent(Histories.this, DetailActivity.class);
+                Intent intent = new Intent(Histories.this, HistoryRecipeDetail.class);
                 intent.putExtra("HISTORY_ID", recipe.getId());
                 startActivity(intent);
             });
