@@ -74,7 +74,7 @@ public class Home extends AppCompatActivity {
 
         // Set the text from the intent or default
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
-        String name = preferences.getString("name", "");
+        String name = preferences.getString("firstname", "");
         tvGreeting.setText(name != null ? "Hello, " + name + "!" : "Hello, User!");
 
         // Apply the scale up and fade in animation to tvGreeting

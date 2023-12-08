@@ -70,6 +70,10 @@ public class Profile extends AppCompatActivity {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("email");
+                editor.remove("firstname");
+                editor.remove("lastname");
                 Intent intent = new Intent(Profile.this, Login.class);
                 startActivity(intent);
             }

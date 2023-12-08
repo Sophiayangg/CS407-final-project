@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("email", email);
                     editor.putString("firstname",firstname);
                     editor.putString("lastname",lastname);
+                    editor.apply();
                     startActivity(intent);
                 }
 
