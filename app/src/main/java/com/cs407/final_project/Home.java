@@ -335,7 +335,7 @@ public class Home extends AppCompatActivity {
                 //Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
             });
         // Show the PopupWindow anchored to the Note button
-            popupWindow.showAsDropDown(noteButton, 0, 0);
+            popupWindow.showAsDropDown(noteButton, 0, -500);
             // Display a Toast message
 
         });

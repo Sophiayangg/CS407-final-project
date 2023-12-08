@@ -136,7 +136,7 @@ public class HistoryRecipeDetail extends AppCompatActivity {
                 //Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
             });
             // Show the PopupWindow anchored to the Note button
-            popupWindow.showAsDropDown(noteButton, 0, -200);
+            popupWindow.showAsDropDown(noteButton, 0, -900);
             // Display a Toast message
 
         });
