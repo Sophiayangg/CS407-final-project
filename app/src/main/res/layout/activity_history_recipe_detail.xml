@@ -48,7 +48,7 @@
             <TextView
                 android:id="@+id/name_text"
                 android:layout_width="354dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="616dp"
                 android:text="Autumn Pecan Pie"
@@ -114,38 +114,51 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/instruction_text"
-                app:layout_constraintBottom_toTopOf="@+id/notes_text"/>
+                app:layout_constraintTop_toBottomOf="@id/instruction_text" />
 
-
-            <TextView
-                android:id="@+id/notes_text"
-                android:layout_width="354dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="Notes"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/instruction_intro_text" />
-
-            <TextView
-                android:id="@+id/notes"
-                android:layout_width="354dp"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
-                android:layout_marginBottom="40dp"
-                android:background="#E1E1E1"
-                android:padding="16dp"
-                android:text="Your Notes Here..."
-                android:textColor="#757575"
-                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notes_text"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/instruction_intro_text"
+                app:layout_constraintBottom_toTopOf="@+id/bottomBar">
+
+            <ImageButton
+                android:id="@+id/btnLike"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_toStartOf="@+id/centerGuideline"
+                android:layout_marginEnd="80dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_like"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/centerGuideline"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true" />
+
+
+            <!-- Note ImageButton for taking notes -->
+            <ImageButton
+                android:id="@+id/btnNote"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_toEndOf="@id/centerGuideline"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_note"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitCenter"/>
+
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

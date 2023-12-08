@@ -163,16 +163,16 @@
             android:layout_below="@id/searchSection"
             android:orientation="vertical">
 
-        <ExpandableListView
-            android:id="@+id/expandableListView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="35dp"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+            <ExpandableListView
+                android:id="@+id/expandableListView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="35dp"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
 
-        <LinearLayout
+            <LinearLayout
             android:id="@+id/resetDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

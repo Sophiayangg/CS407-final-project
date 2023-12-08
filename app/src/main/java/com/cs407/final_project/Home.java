@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "lalalla";
+    private String apiKey = "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";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);

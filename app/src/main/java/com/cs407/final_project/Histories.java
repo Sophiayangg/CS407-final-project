@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -69,47 +74,73 @@ public class Histories extends AppCompatActivity {
         // Clear existing views in the container
         recipesContainer.removeAllViews();
 
-        // Populate the container with recipe names
         for (Recipe recipe : histories) {
+
+            LinearLayout recipeLayout = new LinearLayout(this);
+            recipeLayout.setOrientation(LinearLayout.HORIZONTAL);
+            recipeLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // Create an ImageView
+            //ImageView recipeImageView = new ImageView(this);
+            // Set the image for the ImageView (adjust this based on your data)
+            //recipeImageView.setImageResource(R.drawable.recipe); // Replace with your image resource
+            // Layout parameters for the ImageView
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                    100,  // width in pixels (adjust as needed)
+                    100); // height in pixels (adjust as needed)
+            imageParams.setMargins(10, 10, 10, 10); // Optional margins
+            //recipeImageView.setLayoutParams(imageParams);
+
+            // Create a TextView for the recipe name
             TextView recipeNameTextView = new TextView(this);
             recipeNameTextView.setText(recipe.getName());
             recipeNameTextView.setTextSize(18);
-            recipeNameTextView.setTextColor(Color.WHITE); // White text for better contrast with blue background
-
-            // Set the custom blue background
+            recipeNameTextView.setTextColor(Color.WHITE);
+            recipeNameTextView.setGravity(Gravity.CENTER); // Centers text horizontally
             recipeNameTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_background));
+            // Set the drawable on the left side of the text
+            Drawable resizedDrawable = resizeDrawable(this, R.drawable.recipe, 40, 40); // Adjust the size as needed
+            recipeNameTextView.setCompoundDrawablesWithIntrinsicBounds(resizedDrawable, null, null, null);
+            recipeNameTextView.setCompoundDrawablePadding(8);
 
-            // Layout parameters (margins, etc.)
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10, 15, 10, 15);
-            recipeNameTextView.setLayoutParams(params);
-            // Set other TextView attributes as needed
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, // Makes the TextView take full width of its parent
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            textParams.setMargins(10, 15, 10, 15);
+            recipeNameTextView.setLayoutParams(textParams);
+
+            // Add ImageView and TextView to the LinearLayout
+            //recipeLayout.addView(recipeImageView);
+            recipeLayout.addView(recipeNameTextView);
 
             // Click listener for each TextView
-            recipeNameTextView.setOnClickListener(view -> {
-                Intent intent = new Intent(Histories.this, HistoryRecipeDetail.class);
-                intent.putExtra("HISTORY_ID", recipe.getId());
-                startActivity(intent);
+            recipeLayout.setOnClickListener(view -> {
+                Intent intent1 = new Intent(Histories.this, HistoryRecipeDetail.class);
+                intent1.putExtra("HISTORY_ID", recipe.getId());
+                startActivity(intent1);
             });
 
-            // Long click listener for deletion
-            recipeNameTextView.setOnLongClickListener(view -> {
-                confirmAndDeleteRecipe(recipe.getId(), recipeNameTextView);
+            recipeLayout.setOnLongClickListener(view -> {
+                confirmAndDeleteRecipe(recipe.getId(), recipeLayout);
                 return true;
             });
 
-            recipesContainer.addView(recipeNameTextView);
+            // Add the LinearLayout to your container
+            recipesContainer.addView(recipeLayout);
         }
     }
-    private void confirmAndDeleteRecipe(final int recipeId, final TextView textView) {
+    private void confirmAndDeleteRecipe(final int recipeId, final LinearLayout recipeLayout) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Recipe")
                 .setMessage("Are you sure you want to delete this recipe?")
                 .setPositiveButton("Delete", (dialogInterface, i) -> {
                     DatabaseHelper db = new DatabaseHelper(Histories.this);
-                    db.deleteHistory(recipeId);
-                    refreshRecipeList(); // Refresh the list to reflect the deletion
+                    db.deleteRecipe(recipeId);
+                    LinearLayout recipesContainer = findViewById(R.id.likedItemsContainer);
+                    recipesContainer.removeView(recipeLayout); // Remove the entire recipe item
+                    refreshRecipeList(); // Optionally refresh the list
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -127,35 +158,67 @@ public class Histories extends AppCompatActivity {
 
         // Populate the container with recipe names
         for (Recipe recipe : histories) {
+
+            LinearLayout recipeLayout = new LinearLayout(this);
+            recipeLayout.setOrientation(LinearLayout.HORIZONTAL);
+            recipeLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            // Create an ImageView
+            //ImageView recipeImageView = new ImageView(this);
+            // Set the image for the ImageView (adjust this based on your data)
+            //recipeImageView.setImageResource(R.drawable.recipe); // Replace with your image resource
+            // Layout parameters for the ImageView
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                    100,  // width in pixels (adjust as needed)
+                    100); // height in pixels (adjust as needed)
+            imageParams.setMargins(10, 10, 10, 10); // Optional margins
+            //recipeImageView.setLayoutParams(imageParams);
+
+            // Create a TextView for the recipe name
             TextView recipeNameTextView = new TextView(this);
             recipeNameTextView.setText(recipe.getName());
             recipeNameTextView.setTextSize(18);
-            recipeNameTextView.setTextColor(Color.WHITE); // White text for better contrast with blue background
-
-            // Set the custom blue background
+            recipeNameTextView.setTextColor(Color.WHITE);
+            recipeNameTextView.setGravity(Gravity.CENTER); // Centers text horizontally
             recipeNameTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_background));
+            // Set the drawable on the left side of the text
+            Drawable resizedDrawable = resizeDrawable(this, R.drawable.recipe, 40, 40); // Adjust the size as needed
+            recipeNameTextView.setCompoundDrawablesWithIntrinsicBounds(resizedDrawable, null, null, null);
+            recipeNameTextView.setCompoundDrawablePadding(8);
 
-            // Layout parameters (margins, etc.)
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10, 15, 10, 15);
-            recipeNameTextView.setLayoutParams(params);
-            // Set other TextView attributes as needed
+            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, // Makes the TextView take full width of its parent
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            textParams.setMargins(10, 15, 10, 15);
+            recipeNameTextView.setLayoutParams(textParams);
+
+            // Add ImageView and TextView to the LinearLayout
+            //recipeLayout.addView(recipeImageView);
+            recipeLayout.addView(recipeNameTextView);
 
             // Click listener for each TextView
-            recipeNameTextView.setOnClickListener(view -> {
+            recipeLayout.setOnClickListener(view -> {
                 Intent intent1 = new Intent(Histories.this, HistoryRecipeDetail.class);
                 intent1.putExtra("HISTORY_ID", recipe.getId());
                 startActivity(intent1);
             });
 
-            // Long click listener for deletion
-            recipeNameTextView.setOnLongClickListener(view -> {
-                confirmAndDeleteRecipe(recipe.getId(), recipeNameTextView);
+            recipeLayout.setOnLongClickListener(view -> {
+                confirmAndDeleteRecipe(recipe.getId(), recipeLayout);
                 return true;
             });
 
-            recipesContainer.addView(recipeNameTextView);
+            // Add the LinearLayout to your container
+            recipesContainer.addView(recipeLayout);
         }
+    }
+
+    private Drawable resizeDrawable(Context context, int drawableId, int width, int height) {
+        Drawable image = ContextCompat.getDrawable(context, drawableId);
+        Bitmap b = ((BitmapDrawable) image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, width, height, false);
+        return new BitmapDrawable(context.getResources(), bitmapResized);
     }
 }
