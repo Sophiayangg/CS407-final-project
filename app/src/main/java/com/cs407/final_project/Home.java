@@ -27,6 +27,9 @@ import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.UUID;
 
 import java.io.IOException;
@@ -38,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Connection;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -61,11 +65,11 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String apiKey = "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";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        DatabaseHelper db = new DatabaseHelper(Home.this);
         final TextView tvGreeting = findViewById(R.id.tvGreeting);
         final TextView tvCookingPrompt = findViewById(R.id.tvCookingPrompt);
 
@@ -298,7 +302,6 @@ public class Home extends AppCompatActivity {
             // Find the EditText and Done button in the popup
             EditText noteEditText = popupView.findViewById(R.id.noteEditText);
             AppCompatButton doneButton = popupView.findViewById(R.id.doneButton);
-            DatabaseHelper db = new DatabaseHelper(Home.this);
             // Set the click listener for the Done button
             doneButton.setOnClickListener(view -> {
                 // Get the current recipe details

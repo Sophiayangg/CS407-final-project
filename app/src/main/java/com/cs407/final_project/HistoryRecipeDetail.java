@@ -96,49 +96,5 @@ public class HistoryRecipeDetail extends AppCompatActivity {
                 }
             }
         });
-
-        ImageButton noteButton = findViewById(R.id.btnNote);
-        noteButton.setOnClickListener(v -> {
-            // Find the EditText and Done button in the popup
-            EditText noteEditText = popupView.findViewById(R.id.noteEditText);
-            AppCompatButton doneButton = popupView.findViewById(R.id.doneButton);
-            // Set the click listener for the Done button
-            doneButton.setOnClickListener(view -> {
-                // Get the current recipe details
-                //TextView tvChatGPTOutput = findViewById(R.id.tvChatGPTOutput);
-                //Recipe recipe = parseRecipeFromTextView(tvChatGPTOutput);
-
-                //DatabaseHelper db = new DatabaseHelper(Home.this);
-                //long newRecipeIdLong = db.addRecipe(recipe);
-                //int newRecipeId = (int) newRecipeIdLong; // Cast to int
-
-                String noteContent = noteEditText.getText().toString();
-                int recipeId = recipe.getId();
-                Log.d("note", noteContent);
-                if (db.isRecipeLiked(recipeId)) {
-                    // If the recipe is already liked, insert to note directly
-                    Note note = new Note(recipeId, noteContent);
-                    db.addNote(note);
-                    //db.updateNoteForRecipe(recipeId, noteContent);
-                    Toast.makeText(HistoryRecipeDetail.this, "Note updated for the liked recipe!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // If the recipe is not liked, save the recipe and the note
-                    long newRecipeIdLong = db.addRecipe(recipe);
-                    int newRecipeId = (int) newRecipeIdLong;
-
-                    //db.addRecipe(recipe);
-                    Note note = new Note(newRecipeId, noteContent);
-                    db.addNote(note);
-                    Toast.makeText(HistoryRecipeDetail.this, "Recipe liked and note saved!", Toast.LENGTH_SHORT).show();
-                }
-                // Dismiss the popup window after saving the note
-                popupWindow.dismiss();
-                //Toast.makeText(Home.this, "Note saved!", Toast.LENGTH_SHORT).show();
-            });
-            // Show the PopupWindow anchored to the Note button
-            popupWindow.showAsDropDown(noteButton, 0, -900);
-            // Display a Toast message
-
-        });
     }
 }

@@ -53,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView instructionText = findViewById(R.id.instruction_intro_text);
         TextView notesText = findViewById(R.id.notes);
 
+
         if (recipe != null) {
             nameText.setText(recipe.getName());
             ingredientText.setText(recipe.getIngredients());
