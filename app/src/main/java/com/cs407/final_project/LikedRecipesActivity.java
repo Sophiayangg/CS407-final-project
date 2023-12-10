@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -34,6 +35,7 @@ public class LikedRecipesActivity extends AppCompatActivity {
         setContentView(R.layout.liked_recipe);
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
         email = preferences.getString("email", "");
+        Log.d("like email",email);
         // Ensure this layout has a ScrollView
         ImageButton btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {

@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -29,6 +30,7 @@ public class Histories extends AppCompatActivity {
         setContentView(R.layout.history_recipe);
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
         email = preferences.getString("email", "");
+        Log.d("history email",email);
         ImageButton btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override

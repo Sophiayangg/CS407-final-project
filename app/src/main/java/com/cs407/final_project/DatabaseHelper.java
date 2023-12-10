@@ -79,13 +79,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * clear up all the tables in database
+     */
+    public void clearDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES); // Replace TABLE_NAME with your table name
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
+        // Create tables again
+        onCreate(db);
+    }
+
+
     public long addRecipe(Recipe recipe) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Check if the recipe already exists in the database
         String[] columns = {KEY_ID};
-        String selection = KEY_NAME + " = ?";
-        String[] selectionArgs = {recipe.getName()};
+        String selection = KEY_NAME + " = ? AND " + KEY_USEREMAIL + " = ? ";
+        String[] selectionArgs = {recipe.getName(),recipe.getUserEmail()};
         Cursor cursor = db.query(TABLE_RECIPES, columns, selection, selectionArgs, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -127,8 +140,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Check if the recipe already exists in the database
         String[] columns = {KEY_ID};
-        String selection = KEY_NAME + " = ?";
-        String[] selectionArgs = {recipe.getName()};
+        String selection = KEY_NAME + " = ? AND " + KEY_USEREMAIL + " = ? ";
+        String[] selectionArgs = {recipe.getName(),recipe.getUserEmail()};
         Cursor cursor = db.query(TABLE_HISTORY, columns, selection, selectionArgs, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -156,34 +169,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Recipe> recipeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         // Fetch all recipes
-        Cursor cursor = db.query(TABLE_HISTORY, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_HISTORY, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS,KEY_USEREMAIL}, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 int emailIndex = cursor.getColumnIndex(KEY_USEREMAIL);
+                //Log.d("email Index", "" + emailIndex);
                 if(emailIndex != -1){
                     String email = cursor.getString(emailIndex);
-                    if (email.equalsIgnoreCase(userEmail)) {
+                    if (email.trim().equalsIgnoreCase(userEmail.trim())) {
+                        //Log.d("email matched", email);
+                        int categoryIdIndex = cursor.getColumnIndex(KEY_CATEGORY);
+                        int nameIndex = cursor.getColumnIndex(KEY_NAME);
+                        int introIndex = cursor.getColumnIndex(KEY_INTRODUCTION);
+                        int ingredientIndex = cursor.getColumnIndex(KEY_INGREDIENTS);
+                        int instructionIndex = cursor.getColumnIndex(KEY_INSTRUCTIONS);
+                        int idIndex = cursor.getColumnIndex(KEY_ID);
 
-                    }
-                    int categoryIdIndex = cursor.getColumnIndex(KEY_CATEGORY);
-                    int nameIndex = cursor.getColumnIndex(KEY_NAME);
-                    int introIndex = cursor.getColumnIndex(KEY_INTRODUCTION);
-                    int ingredientIndex = cursor.getColumnIndex(KEY_INGREDIENTS);
-                    int instructionIndex = cursor.getColumnIndex(KEY_INSTRUCTIONS);
-                    int idIndex = cursor.getColumnIndex(KEY_ID);
 
-
-                    if (categoryIdIndex != -1 && nameIndex != -1 && introIndex != -1 && ingredientIndex != -1 && instructionIndex != -1 && idIndex != -1) { // Check if all indices are valid
-                        Recipe recipe = new Recipe(
-                                cursor.getString(nameIndex),
-                                cursor.getString(categoryIdIndex),
-                                cursor.getString(introIndex),
-                                cursor.getString(ingredientIndex),
-                                cursor.getString(instructionIndex),
-                                email);
-                        recipe.setId(cursor.getInt(idIndex));
-                        recipeList.add(recipe);
+                        if (categoryIdIndex != -1 && nameIndex != -1 && introIndex != -1 && ingredientIndex != -1 && instructionIndex != -1 && idIndex != -1) { // Check if all indices are valid
+                            Recipe recipe = new Recipe(
+                                    cursor.getString(nameIndex),
+                                    cursor.getString(categoryIdIndex),
+                                    cursor.getString(introIndex),
+                                    cursor.getString(ingredientIndex),
+                                    cursor.getString(instructionIndex),
+                                    email);
+                            recipe.setId(cursor.getInt(idIndex));
+                            recipeList.add(recipe);
+                        }
                     }
                 }
             } while (cursor.moveToNext());
@@ -199,7 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         // Fetch all recipes
-        Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS,KEY_USEREMAIL}, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -212,7 +226,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String email = cursor.getString(emailIndex);
                     //Log.d("Categories", "Fetched Categories: " + categories); // Log the categories
                     String[] categoryArray = categories.split("/");
-                    if(email.equalsIgnoreCase(userEmail)){
+                    if(email.trim().equalsIgnoreCase(userEmail.trim())){
+                        //Log.d("email matched", email);
                         for (String cat : categoryArray) {
                             //Log.d("CategoryCheck", "Checking Category: " + cat.trim()); // Log each category being checked
                             if (cat.trim().equalsIgnoreCase(category.trim())) {
@@ -257,7 +272,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Recipe getRecipeById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        Cursor cursor = db.query(TABLE_RECIPES, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS, KEY_USEREMAIL}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
 
         Recipe recipe = null;
         if (cursor != null && cursor.moveToFirst()) {
@@ -291,7 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Recipe getHistoryById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_HISTORY, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
+        Cursor cursor = db.query(TABLE_HISTORY, new String[]{KEY_ID, KEY_NAME, KEY_CATEGORY, KEY_INTRODUCTION, KEY_INGREDIENTS, KEY_INSTRUCTIONS, KEY_USEREMAIL}, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
 
         Recipe recipe = null;
         if (cursor != null && cursor.moveToFirst()) {

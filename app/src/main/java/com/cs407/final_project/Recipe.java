@@ -7,7 +7,6 @@ public class Recipe {
     private String introduction;
     private String ingredients;
     private String instructions;
-
     private String userEmail;
 
     // Constructors

@@ -67,13 +67,13 @@ public class Home extends AppCompatActivity {
 
     private String email;
 
-    private String apiKey = "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";
+    private String apiKey = "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";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
         email = preferences.getString("email", "");
-
+        Log.d("Home email",email);
         DatabaseHelper db = new DatabaseHelper(Home.this);
         final TextView tvGreeting = findViewById(R.id.tvGreeting);
         final TextView tvCookingPrompt = findViewById(R.id.tvCookingPrompt);
