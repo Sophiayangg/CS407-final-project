@@ -36,6 +36,15 @@ public class HistoryRecipeDetail extends AppCompatActivity {
         boolean focusable = true;
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
+        ImageButton arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HistoryRecipeDetail.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

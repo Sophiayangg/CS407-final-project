@@ -191,7 +191,7 @@
             android:layout_weight="1"
             android:background="?android:selectableItemBackground"
             android:padding="8dp"
-
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_menu" />
 
         <ImageButton
