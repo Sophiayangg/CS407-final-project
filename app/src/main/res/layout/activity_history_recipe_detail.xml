@@ -23,7 +23,7 @@
                 android:layout_width="0dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="17dp"
                 android:layout_weight="1"
                 android:background="?android:selectableItemBackground"
                 android:padding="8dp"
@@ -37,7 +37,7 @@
                 android:layout_width="285dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Ingredients and instructions"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -49,15 +49,17 @@
                 android:id="@+id/name_text"
                 android:layout_width="354dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="616dp"
+                android:layout_marginTop="20dp"
                 android:text="Autumn Pecan Pie"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
+                android:shadowColor="#80000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                app:layout_constraintTop_toBottomOf="@id/Ingredients_list_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/Ingredients_list_text" />
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/ingredient_text"
@@ -80,6 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
+                android:background="#E1E1E1"
+                android:padding="10dp"
                 android:text=" 1/4 cups all-purpose flour \n 1/2 teaspoon salt \n 1/2 cup (1 stick) cold unsalted butter, cubed \n 2-4 tablespoons ice water"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,6 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
+                android:background="#E1E1E1"
+                android:padding="10dp"
                 android:text="This is the recipe for Autumn pie Bla bla bla"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,16 +134,29 @@
                 app:layout_constraintTop_toBottomOf="@id/instruction_intro_text"
                 app:layout_constraintBottom_toTopOf="@+id/bottomBar">
 
-            <ImageButton
-                android:id="@+id/btnLike"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="80dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_like"
-                android:background="?android:selectableItemBackground"
-                android:scaleType="fitCenter"
-                android:layout_centerInParent="true"/>
+                <ImageButton
+                    android:id="@+id/btnLike"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="80dp"
+                    android:background="?android:selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_like" />
+
+                <TextView
+                    android:id="@+id/like_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnLike"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:text="Click to save!"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"/>
+
 
             </RelativeLayout>
 

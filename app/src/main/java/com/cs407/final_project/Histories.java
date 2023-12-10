@@ -35,6 +35,15 @@ public class Histories extends AppCompatActivity {
             }
         });
 
+        ImageButton arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Histories.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
         ImageButton btnProfile = findViewById(R.id.btnUserProfile);
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override

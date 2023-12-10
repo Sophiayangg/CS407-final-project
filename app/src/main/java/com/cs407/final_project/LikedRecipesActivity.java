@@ -40,6 +40,15 @@ public class LikedRecipesActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton arrow = findViewById(R.id.arrow);
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LikedRecipesActivity.this, activity_catagories.class);
+                startActivity(intent);
+            }
+        });
+
         ImageButton btnProfile = findViewById(R.id.btnUserProfile);
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
