@@ -3,11 +3,13 @@ package com.cs407.final_project;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -24,12 +26,16 @@ import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
-public class LikedRecipesActivity extends AppCompatActivity {
 
+public class LikedRecipesActivity extends AppCompatActivity {
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.liked_recipe);
+        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+        email = preferences.getString("email", "");
+        Log.d("like email",email);
         // Ensure this layout has a ScrollView
         ImageButton btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +89,7 @@ public class LikedRecipesActivity extends AppCompatActivity {
 
         String category = getIntent().getStringExtra("category");
         DatabaseHelper db = new DatabaseHelper(this);
-        List<Recipe> likedRecipes = db.getRecipesByCategory(category);
+        List<Recipe> likedRecipes = db.getRecipesByCategory(category,email);
 
         TextView likedTextView = findViewById(R.id.liked_text);
         likedTextView.setText("Liked " + category + " Recipes:");
@@ -180,7 +186,7 @@ public class LikedRecipesActivity extends AppCompatActivity {
     private void refreshRecipeList() {
         String category = getIntent().getStringExtra("category");
         DatabaseHelper db = new DatabaseHelper(this);
-        List<Recipe> likedRecipes = db.getRecipesByCategory(category);
+        List<Recipe> likedRecipes = db.getRecipesByCategory(category,email);
 
         LinearLayout recipesContainer = findViewById(R.id.likedItemsContainer); // Assuming this is your LinearLayout inside ScrollView
 

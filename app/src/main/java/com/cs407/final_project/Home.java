@@ -65,10 +65,15 @@ public class Home extends AppCompatActivity {
 
     private OpenAIApiService service;
 
-    private String apiKey = "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";
+    private String email;
+
+    private String apiKey = "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";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+        email = preferences.getString("email", "");
+        Log.d("Home email",email);
         DatabaseHelper db = new DatabaseHelper(Home.this);
         final TextView tvGreeting = findViewById(R.id.tvGreeting);
         final TextView tvCookingPrompt = findViewById(R.id.tvCookingPrompt);
@@ -77,7 +82,6 @@ public class Home extends AppCompatActivity {
         tvCookingPrompt.setVisibility(View.INVISIBLE);
 
         // Set the text from the intent or default
-        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
         String name = preferences.getString("firstname", "");
         tvGreeting.setText(name != null ? "Hello, " + name + "!" : "Hello, User!");
 
@@ -370,7 +374,7 @@ public class Home extends AppCompatActivity {
         Log.d("RecipeIngredients", ingredients);
         Log.d("RecipeInstructions", instructions);
 
-        return new Recipe(name, category, introduction, ingredients, instructions);
+        return new Recipe(name, category, introduction, ingredients, instructions,email);
     }
 
     private String extractBetween(String text, String start, String end) {

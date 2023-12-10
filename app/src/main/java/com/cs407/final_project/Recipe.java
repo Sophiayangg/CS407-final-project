@@ -7,12 +7,14 @@ public class Recipe {
     private String introduction;
     private String ingredients;
     private String instructions;
+    private String userEmail;
 
     // Constructors
     public Recipe() {}
 
-    public Recipe(String name, String category, String introduction, String ingredients, String instructions) {
+    public Recipe(String name, String category, String introduction, String ingredients, String instructions, String userEmail) {
         this.name = name;
+        this.userEmail = userEmail;
         this.category = category;
         this.introduction = introduction;
         this.ingredients = ingredients;
@@ -43,5 +45,9 @@ public class Recipe {
     }
     public String getInstructions() {
         return instructions;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
     }
 }

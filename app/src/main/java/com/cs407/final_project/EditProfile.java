@@ -38,6 +38,7 @@ public class EditProfile extends AppCompatActivity {
     private Uri image_uri;
 
 
+
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
