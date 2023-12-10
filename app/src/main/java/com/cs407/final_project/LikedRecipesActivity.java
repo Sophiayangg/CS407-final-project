@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,6 +34,9 @@ public class LikedRecipesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.liked_recipe);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
         email = preferences.getString("email", "");
         Log.d("like email",email);
@@ -72,8 +76,8 @@ public class LikedRecipesActivity extends AppCompatActivity {
         });
 
         // Set up the Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar); // Set the Toolbar as the ActionBar
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar); // Set the Toolbar as the ActionBar
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView likedText = findViewById(R.id.liked_text);
@@ -155,6 +159,16 @@ public class LikedRecipesActivity extends AppCompatActivity {
             // Add the LinearLayout to your container
             recipesContainer.addView(recipeLayout);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(LikedRecipesActivity.this, Profile.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private Drawable resizeDrawable(Context context, int drawableId, int width, int height) {

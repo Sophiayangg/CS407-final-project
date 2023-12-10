@@ -67,7 +67,7 @@ public class Home extends AppCompatActivity {
 
     private String email;
 
-    private String apiKey = "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";
+    private String apiKey = "lalala";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -75,6 +75,7 @@ public class Home extends AppCompatActivity {
         email = preferences.getString("email", "");
         Log.d("Home email",email);
         DatabaseHelper db = new DatabaseHelper(Home.this);
+        //db.clearDatabase();
         final TextView tvGreeting = findViewById(R.id.tvGreeting);
         final TextView tvCookingPrompt = findViewById(R.id.tvCookingPrompt);
 
