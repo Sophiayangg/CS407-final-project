@@ -2,20 +2,46 @@ package com.cs407.final_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class Profile extends AppCompatActivity {
 
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+        email = preferences.getString("email", "User");
+
+        ImageView profile = findViewById(R.id.profile_img);
+        //retrieve the photo:
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath = new File(directory, email+".jpg");
+
+        // Check if the file exists
+        if (mypath.exists()) {
+            Bitmap retrievedBitmap = BitmapFactory.decodeFile(mypath.getAbsolutePath());
+            profile.setImageBitmap(retrievedBitmap);
+        } else {
+            Log.e("profile doesn't exist",email);
+            // File doesn't exist, default
+        }
 
         ImageButton btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +68,6 @@ public class Profile extends AppCompatActivity {
             startActivity(intent);
         });
 
-        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
         String firstname = preferences.getString("firstname", "User");
         String lastname = preferences.getString("lastname","");
         TextView nameView = findViewById(R.id.profile_name);
