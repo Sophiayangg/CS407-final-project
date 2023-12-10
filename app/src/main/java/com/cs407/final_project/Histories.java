@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,11 +22,13 @@ import android.widget.TextView;
 import java.util.List;
 
 public class Histories extends AppCompatActivity {
-
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_recipe);
+        SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+        email = preferences.getString("email", "");
         ImageButton btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +79,7 @@ public class Histories extends AppCompatActivity {
         }
 
         DatabaseHelper db = new DatabaseHelper(this);
-        List<Recipe> histories = db.getHistories();
+        List<Recipe> histories = db.getHistories(email);
 
         LinearLayout recipesContainer = findViewById(R.id.historiesContainer); // Assuming this is your LinearLayout inside ScrollView
 
@@ -146,7 +149,7 @@ public class Histories extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete this recipe?")
                 .setPositiveButton("Delete", (dialogInterface, i) -> {
                     DatabaseHelper db = new DatabaseHelper(Histories.this);
-                    db.deleteRecipe(recipeId);
+                    db.deleteHistory(recipeId);
                     LinearLayout recipesContainer = findViewById(R.id.likedItemsContainer);
                     recipesContainer.removeView(recipeLayout); // Remove the entire recipe item
                     refreshRecipeList(); // Optionally refresh the list
@@ -158,7 +161,7 @@ public class Histories extends AppCompatActivity {
     private void refreshRecipeList() {
 
         DatabaseHelper db = new DatabaseHelper(this);
-        List<Recipe> histories = db.getHistories();
+        List<Recipe> histories = db.getHistories(email);
 
         LinearLayout recipesContainer = findViewById(R.id.historiesContainer); // Assuming this is your LinearLayout inside ScrollView
 
