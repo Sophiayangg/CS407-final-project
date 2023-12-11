@@ -1,8 +1,5 @@
 package com.cs407.final_project;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +8,6 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.List;
-
-// MainActivity.java
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -112,24 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-            timerTextView = findViewById(R.id.timerTextView);
-            startButton = findViewById(R.id.startButton);
-
-            timerHelper = new TimerHelper(this);
-
-            startButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    timerHelper.startTimer(30000); // 30 seconds countdown
-                }
-            });
-
-
-
     }
-
-
-
     private boolean isValidEmail(String email) {
         // Check if email is valid
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -156,40 +126,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-        private TextView timerTextView;
-        private Button startButton;
-        private TimerHelper timerHelper;
-
-
-        @Override
-        public void onTimerTick(long millisUntilFinished) {
-            updateTimerText(millisUntilFinished);
-        }
-
-        @Override
-        public void onTimerFinish() {
-            // Handle timer finish logic, e.g., show a message or perform an action
-            timerTextView.setText("00:00:00");
-        }
-
-        private void updateTimerText(long millisUntilFinished) {
-            int seconds = (int) (millisUntilFinished / 1000);
-            int minutes = seconds / 60;
-            int hours = minutes / 60;
-
-            String time = String.format("%02d:%02d:%02d",
-                    hours % 24,
-                    minutes % 60,
-                    seconds % 60);
-
-            timerTextView.setText(time);
-        }
-
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            timerHelper.cancelTimer();
-        }
-    }
 
 }

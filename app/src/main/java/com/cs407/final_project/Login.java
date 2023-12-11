@@ -1,7 +1,5 @@
 package com.cs407.final_project;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CheckBox;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
@@ -48,42 +48,6 @@ public class Login extends AppCompatActivity {
         }
 
          */
-
-
-        emailEditText = findViewById(R.id.email);
-        passwordEditText = findViewById(R.id.Password);
-        rememberMeCheckBox = findViewById(R.id.checkBoxRememberMe);
-        sharedPreferencesHelper = new SharedPreferencesHelper(this);
-        // Check if "Remember Me" is enabled
-        if (sharedPreferencesHelper.getRememberMeStatus()) {
-            emailEditText.setText(sharedPreferencesHelper.getSavedUsername());
-            passwordEditText.setText(sharedPreferencesHelper.getSavedPassword());
-            rememberMeCheckBox.setChecked(true);
-        }
-        // Add your login button click listener
-        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                boolean rememberMe = rememberMeCheckBox.isChecked();
-                if (isValidCredentials(email, password)) {
-                    // Save credentials if "Remember Me" is enabled
-                    if (rememberMe) {
-                        sharedPreferencesHelper.saveCredentials(email, password, true);
-                        // Launch the main activity
-                    } else {
-                        sharedPreferencesHelper.saveCredentials("", "", false);
-                    }
-
-                    // Launch the main activity
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-                    finish(); // Optional: finish the login activity to prevent going back
-                }
-            }
-        });
-
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.Password);
         rememberMeCheckBox = findViewById(R.id.checkBoxRememberMe);

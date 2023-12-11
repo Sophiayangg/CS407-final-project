@@ -1,10 +1,5 @@
 package com.cs407.final_project;
 
-import static java.security.AccessController.getContext;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,17 +16,14 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.util.Arrays;
-import java.util.UUID;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -42,22 +34,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Connection;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
 
 
 public class Home extends AppCompatActivity {
@@ -353,25 +340,7 @@ public class Home extends AppCompatActivity {
 
         });
 
-
-
-
-        //set a viewpager on a home page in Android Studio. It can auto scroll some pictures which
-        // people can click on and navigate to anther page.
-        ViewPager2 viewPager = findViewById(R.id.viewPager);
-        List<Integer> imageList = Arrays.asList(
-                R.drawable.autumn_pecan_pie,
-                R.drawable.tomato_egg_noodle,
-                R.drawable.ground_beef_tacos
-        );
-
-        MyPagerAdapter adapter = new MyPagerAdapter(this, imageList);
-        viewPager.setAdapter(adapter);
-
-
-
     }
-
 
     public void setCurrentRecipeId(int recipeId) {
         this.currentRecipeId = recipeId;
