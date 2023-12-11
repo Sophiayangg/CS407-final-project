@@ -46,6 +46,28 @@ public class Profile extends AppCompatActivity {
             // File doesn't exist, default
         }
 
+
+
+
+        ImageView arrowHistoryPage = findViewById(R.id.arrowHistoryPage);
+        arrowHistoryPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, Histories.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView arrowEditProfilePage = findViewById(R.id.arrowEditProfilePage);
+        arrowHistoryPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, EditProfile.class);
+                startActivity(intent);
+            }
+        });
+
+
         ImageButton btnMenu = findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
