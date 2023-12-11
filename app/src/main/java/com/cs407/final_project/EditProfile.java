@@ -171,8 +171,6 @@ public class EditProfile extends AppCompatActivity {
         } else if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             // Set picked image to the ImageButton
             image_uri = data.getData();
-            int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            getContentResolver().takePersistableUriPermission(image_uri, takeFlags);
             Bitmap bitmap = null;
             try {
                 // Retrieve the image from the URI
