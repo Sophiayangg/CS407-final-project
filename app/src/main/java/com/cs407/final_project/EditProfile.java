@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -157,6 +158,16 @@ public class EditProfile extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
             // Set captured image to the ImageButton
             profileImageView.setImageURI(image_uri);
+            Bitmap bitmap = null;
+            try {
+                // Retrieve the image from the URI
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
+                // Save the image to local storage
+                saveToInternalStorage(bitmap, email);
+                profileImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             // Set picked image to the ImageButton
             image_uri = data.getData();
@@ -179,7 +190,11 @@ public class EditProfile extends AppCompatActivity {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File mypath = new File(directory, fileName + ".jpg");
+        Log.e("filename1",fileName);
         FileOutputStream fos = null;
+        if(mypath.exists()){
+            mypath.delete();
+        }
         try {
             fos = new FileOutputStream(mypath);
             bitmapImage.compress(Bitmap.CompressFormat.JPEG, 60, fos);
