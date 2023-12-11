@@ -124,26 +124,26 @@ public class LikedRecipesActivity extends AppCompatActivity {
             //recipeImageView.setLayoutParams(imageParams);
 
             // Create a TextView for the recipe name
-            TextView recipeNameTextView = new TextView(this);
-            recipeNameTextView.setText(recipe.getName());
-            recipeNameTextView.setTextSize(18);
-            recipeNameTextView.setTextColor(Color.WHITE);
-            recipeNameTextView.setGravity(Gravity.CENTER); // Centers text horizontally
-            recipeNameTextView.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_background));
+            TextView recipeName = new TextView(this);
+            recipeName.setText(recipe.getName());
+            recipeName.setTextSize(18);
+            recipeName.setTextColor(Color.WHITE);
+            recipeName.setGravity(Gravity.CENTER); // Centers text horizontally
+            recipeName.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_background));
             // Set the drawable on the left side of the text
             Drawable resizedDrawable = resizeDrawable(this, R.drawable.recipe, 40, 40); // Adjust the size as needed
-            recipeNameTextView.setCompoundDrawablesWithIntrinsicBounds(resizedDrawable, null, null, null);
-            recipeNameTextView.setCompoundDrawablePadding(8);
+            recipeName.setCompoundDrawablesWithIntrinsicBounds(resizedDrawable, null, null, null);
+            recipeName.setCompoundDrawablePadding(8);
 
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, // Makes the TextView take full width of its parent
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             textParams.setMargins(10, 15, 10, 15);
-            recipeNameTextView.setLayoutParams(textParams);
+            recipeName.setLayoutParams(textParams);
 
             // Add ImageView and TextView to the LinearLayout
             //recipeLayout.addView(recipeImageView);
-            recipeLayout.addView(recipeNameTextView);
+            recipeLayout.addView(recipeName);
 
             // Set Click and Long Click Listeners on the LinearLayout or TextView
             recipeLayout.setOnClickListener(view -> {
