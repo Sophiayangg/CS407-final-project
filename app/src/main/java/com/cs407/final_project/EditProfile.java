@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,7 +41,7 @@ public class EditProfile extends AppCompatActivity {
     private static final int IMAGE_CAPTURE_CODE = 1001;
     private static final int PICK_IMAGE = 1002;
 
-    private String oldEmail;
+    private String email;
 
     private Uri image_uri;
 
@@ -77,9 +79,22 @@ public class EditProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        ImageView profileImageView = findViewById(R.id.avatarImageView);
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
-        oldEmail = preferences.getString("email", "");
+        email = preferences.getString("email", "");
+
+        ImageView profileImageView = findViewById(R.id.avatarImageView);
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath = new File(directory, email+".jpg");
+
+        // Check if the file exists
+        if (mypath.exists()) {
+            Bitmap retrievedBitmap = BitmapFactory.decodeFile(mypath.getAbsolutePath());
+            profileImageView.setImageBitmap(retrievedBitmap);
+        } else {
+            //default
+        }
+
         requestPermissions();
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,31 +111,23 @@ public class EditProfile extends AppCompatActivity {
             public void onClick(View v) {
                 EditText editTextFirstname = findViewById(R.id.firstName);
                 EditText editTextLastname = findViewById(R.id.lastName);
-                EditText editTextEmail = findViewById(R.id.email);
                 EditText editTextPassword = findViewById(R.id.Password);
 
                 String  firstname= String.valueOf(editTextFirstname.getText());
                 String  lastname = String.valueOf(editTextLastname.getText());
-                String  email = String.valueOf(editTextEmail.getText());
                 String  password = String.valueOf(editTextPassword.getText());
 
-
-                if (!isValidEmail(email)) {
-                    showErrorToast("Invalid email address.");
-                    return;
-                }
 
                 if (!isPasswordStrong(password)) {
                     showErrorToast("Password must be at least 6 characters long, contain at least one number, and one lowercase letter.");
                     return;
                 }
+
                 Context context = getApplicationContext();
                 SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("users", Context.MODE_PRIVATE, null);
-                //get old email
-                String oldEmail = preferences.getString("email", "default");
 
                 DBHelper dbHelper = new DBHelper(sqLiteDatabase);
-                dbHelper.deleteUser(oldEmail);
+                dbHelper.deleteUser(email);
                 String message = dbHelper.saveUser(firstname, lastname, email, password);
                 Log.i("RegistrationTag", message);
 
@@ -132,8 +139,6 @@ public class EditProfile extends AppCompatActivity {
                     // Only proceed to the Home activity if the user was registered successfully
                     Intent intent = new Intent(EditProfile.this, Profile.class);
                     SharedPreferences.Editor editor = preferences.edit();
-                    renameFile(context,oldEmail, email);
-                    editor.putString("email", email);
                     editor.putString("firstname",firstname);
                     editor.putString("lastname",lastname);
                     editor.apply();
@@ -143,27 +148,8 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
-    public static boolean renameFile(Context context, String oldName, String newName) {
-        File directory = context.getDir("imageDir", Context.MODE_PRIVATE);
-        File oldFile = new File(directory, oldName+".jpg");
-        File newFile = new File(directory, newName+".jpg");
 
-        // Check if the old file exists
-        if (oldFile.exists()) {
-            // Attempt to rename the file
-            if (oldFile.renameTo(newFile)) {
-                // The file has been successfully renamed
-                return true;
-            } else {
-                // The file renaming failed
-                return false;
-            }
-        } else {
-            // The old file doesn't exist
-            return false;
-        }
-    }
-
+    @SuppressLint("WrongConstant")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -174,14 +160,15 @@ public class EditProfile extends AppCompatActivity {
         } else if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             // Set picked image to the ImageButton
             image_uri = data.getData();
+            int takeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            getContentResolver().takePersistableUriPermission(image_uri, takeFlags);
             Bitmap bitmap = null;
             try {
                 // Retrieve the image from the URI
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
                 // Save the image to local storage
-                saveToInternalStorage(bitmap, oldEmail);
+                saveToInternalStorage(bitmap, email);
                 profileImageView.setImageBitmap(bitmap);
-                profileImageView.setImageURI(image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -192,23 +179,25 @@ public class EditProfile extends AppCompatActivity {
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File mypath = new File(directory, fileName + ".jpg");
-
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
-            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException e) {
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+            } catch (Exception e) {
                 e.printStackTrace();
+                Log.e("profile1",e.getMessage());
+            } finally {
+                try {
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                    Log.e("profile2",e.getMessage());
+                    e.printStackTrace();
+                }
             }
-        }
     }
+
 
     private void showImagePickDialog() {
         List<String> options = new ArrayList<>();
@@ -249,10 +238,6 @@ public class EditProfile extends AppCompatActivity {
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
-    private boolean isValidEmail(String email) {
-        // Check if email is valid
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
     private boolean isPasswordStrong(String password) {
         //  password that must be at least 6 characters long, contain at least one number, and one lowercase letter
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-z]).{6,}$";

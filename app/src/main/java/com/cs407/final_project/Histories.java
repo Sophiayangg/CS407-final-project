@@ -141,10 +141,10 @@ public class Histories extends AppCompatActivity {
                 startActivity(intent1);
             });
 
-            recipeLayout.setOnLongClickListener(view -> {
-                confirmAndDeleteRecipe(recipe.getId(), recipeLayout);
-                return true;
-            });
+//            recipeLayout.setOnLongClickListener(view -> {
+//                confirmAndDeleteRecipe(recipe.getId(), recipeLayout);
+//                return true;
+//            });
 
             // Add the LinearLayout to your container
             recipesContainer.addView(recipeLayout);

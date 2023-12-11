@@ -110,21 +110,6 @@
                 android:textColorHint="#888888" />
         </LinearLayout>
 
-        <!-- Row for Email -->
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/edittext_rounded_bg"
-            android:hint="Email*"
-            android:inputType="text"
-            android:padding="10dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="#333333"
-            android:textColorHint="#888888" />
-
         <!-- Row for Password -->
         <EditText
             android:id="@+id/Password"
