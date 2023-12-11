@@ -164,7 +164,7 @@ public class LikedRecipesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(LikedRecipesActivity.this, Profile.class);
+            Intent intent = new Intent(LikedRecipesActivity.this, activity_catagories.class);
             startActivity(intent);
             return true;
         }

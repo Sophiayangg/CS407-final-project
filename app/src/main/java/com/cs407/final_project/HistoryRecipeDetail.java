@@ -40,7 +40,7 @@ public class HistoryRecipeDetail extends AppCompatActivity {
         arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HistoryRecipeDetail.this, Profile.class);
+                Intent intent = new Intent(HistoryRecipeDetail.this, Histories.class);
                 startActivity(intent);
             }
         });
