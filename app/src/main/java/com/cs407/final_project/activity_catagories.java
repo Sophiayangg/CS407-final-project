@@ -16,15 +16,15 @@ import java.util.List;
 public class activity_catagories extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
-    private List<CategoryItem> categoryItems;
+    private List<CategoryItem> categoryItem;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.categories);
-        ImageButton btnMenu = findViewById(R.id.btnMenu);
-        btnMenu.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonMenu = findViewById(R.id.btnMenu);
+        buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity_catagories.this, activity_catagories.class);
@@ -32,8 +32,8 @@ public class activity_catagories extends AppCompatActivity {
             }
         });
 
-        ImageButton btnProfile = findViewById(R.id.btnUserProfile);
-        btnProfile.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonProfile = findViewById(R.id.btnUserProfile);
+        buttonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity_catagories.this, Profile.class);
@@ -52,19 +52,19 @@ public class activity_catagories extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
         // Prepare data
-        categoryItems = new ArrayList<>();
+        categoryItem = new ArrayList<>();
         // Add CategoryItems to the list
-        categoryItems.add(new CategoryItem(R.drawable.img_5938, "ASIAN"));
-        categoryItems.add(new CategoryItem(R.drawable.img_5941, "DRINKS"));
-        categoryItems.add(new CategoryItem(R.drawable.img_5942, "MEXICAN"));
-        categoryItems.add(new CategoryItem(R.drawable.img_5943, "WESTERN"));
-        categoryItems.add(new CategoryItem(R.drawable.img_5940, "INDIAN"));
-        categoryItems.add(new CategoryItem(R.drawable.img_5946, "DESSERTS"));
-        categoryItems.add(new CategoryItem(R.drawable.img, "AFRICAN"));
-        categoryItems.add(new CategoryItem(R.drawable.img_5945, "OTHER"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5938, "ASIAN"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5941, "DRINKS"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5942, "MEXICAN"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5943, "WESTERN"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5940, "INDIAN"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5946, "DESSERTS"));
+        categoryItem.add(new CategoryItem(R.drawable.img, "AFRICAN"));
+        categoryItem.add(new CategoryItem(R.drawable.img_5945, "OTHER"));
 
         // Set adapter
-        adapter = new CategoryAdapter(this, categoryItems);
+        adapter = new CategoryAdapter(this, categoryItem);
         recyclerView.setAdapter(adapter);
 
         // ... add other categories
