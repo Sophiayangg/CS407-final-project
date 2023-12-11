@@ -48,6 +48,42 @@ public class Login extends AppCompatActivity {
         }
 
          */
+
+
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.Password);
+        rememberMeCheckBox = findViewById(R.id.checkBoxRememberMe);
+        sharedPreferencesHelper = new SharedPreferencesHelper(this);
+        // Check if "Remember Me" is enabled
+        if (sharedPreferencesHelper.getRememberMeStatus()) {
+            emailEditText.setText(sharedPreferencesHelper.getSavedUsername());
+            passwordEditText.setText(sharedPreferencesHelper.getSavedPassword());
+            rememberMeCheckBox.setChecked(true);
+        }
+        // Add your login button click listener
+        findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                boolean rememberMe = rememberMeCheckBox.isChecked();
+                if (isValidCredentials(email, password)) {
+                    // Save credentials if "Remember Me" is enabled
+                    if (rememberMe) {
+                        sharedPreferencesHelper.saveCredentials(email, password, true);
+                        // Launch the main activity
+                    } else {
+                        sharedPreferencesHelper.saveCredentials("", "", false);
+                    }
+
+                    // Launch the main activity
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                    finish(); // Optional: finish the login activity to prevent going back
+                }
+            }
+        });
+
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.Password);
         rememberMeCheckBox = findViewById(R.id.checkBoxRememberMe);

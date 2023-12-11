@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -102,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+
     private boolean isValidEmail(String email) {
         // Check if email is valid
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
