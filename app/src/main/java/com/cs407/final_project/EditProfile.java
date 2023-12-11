@@ -167,8 +167,8 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ImageView profileImageView = findViewById(R.id.avatarImageView);
         if (resultCode == RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
-            ImageView profileImageView = findViewById(R.id.avatarImageView);
             // Set captured image to the ImageButton
             profileImageView.setImageURI(image_uri);
         } else if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
@@ -180,8 +180,7 @@ public class EditProfile extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_uri);
                 // Save the image to local storage
                 saveToInternalStorage(bitmap, oldEmail);
-
-                ImageView profileImageView = findViewById(R.id.avatarImageView);
+                profileImageView.setImageBitmap(bitmap);
                 profileImageView.setImageURI(image_uri);
             } catch (IOException e) {
                 e.printStackTrace();
