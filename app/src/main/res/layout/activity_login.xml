@@ -86,6 +86,16 @@
             android:textColor="#333333"
             android:textColorHint="#888888" />
 
+        <CheckBox
+            android:id="@+id/checkBoxRememberMe"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginEnd="176dp"
+            android:layout_marginBottom="11dp"
+            android:text="Remember Me"
+            android:textAlignment="viewStart" />
+
     </LinearLayout>
 
 
@@ -101,7 +111,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rectangle_container"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.172" />
 
     <TextView
         android:id="@+id/DHaveAcc"
@@ -159,6 +169,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rectangle_container" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
