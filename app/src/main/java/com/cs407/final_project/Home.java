@@ -473,112 +473,112 @@ public class Home extends AppCompatActivity {
     }
 
 
-        private void initializeData() {
-            expandableListDetail = new HashMap<>();
+    private void initializeData() {
+        expandableListDetail = new HashMap<>();
 
-            List<String> cuisineTypes = new ArrayList<>();
-            cuisineTypes.add("Italian");
-            cuisineTypes.add("Chinese");
-            cuisineTypes.add("American");
-            cuisineTypes.add("Mediterranean");
-            cuisineTypes.add("Mexican");
-            cuisineTypes.add("Indian");
-            expandableListDetail.put("Cuisine Type", cuisineTypes);
+        List<String> cuisineTypes = new ArrayList<>();
+        cuisineTypes.add("Italian");
+        cuisineTypes.add("Chinese");
+        cuisineTypes.add("American");
+        cuisineTypes.add("Mediterranean");
+        cuisineTypes.add("Mexican");
+        cuisineTypes.add("Indian");
+        expandableListDetail.put("Cuisine Type", cuisineTypes);
 
-            List<String> Restrictions = new ArrayList<>();
-            Restrictions.add("Vegetarian");
-            Restrictions.add("Vegan");
-            Restrictions.add("Gluten-Free");
-            Restrictions.add("Dairy-Free");
-            Restrictions.add("Keto");
-            expandableListDetail.put("Dietary Restrictions", Restrictions);
+        List<String> Restrictions = new ArrayList<>();
+        Restrictions.add("Vegetarian");
+        Restrictions.add("Vegan");
+        Restrictions.add("Gluten-Free");
+        Restrictions.add("Dairy-Free");
+        Restrictions.add("Keto");
+        expandableListDetail.put("Dietary Restrictions", Restrictions);
 
-            List<String> Type = new ArrayList<>();
-            Type.add("Breakfast");
-            Type.add("Lunch");
-            Type.add("Dinner");
-            Type.add("Snacks");
-            Type.add("Desserts");
-            expandableListDetail.put("Meal Type", Type);
+        List<String> Type = new ArrayList<>();
+        Type.add("Breakfast");
+        Type.add("Lunch");
+        Type.add("Dinner");
+        Type.add("Snacks");
+        Type.add("Desserts");
+        expandableListDetail.put("Meal Type", Type);
 
-            List<String> Time = new ArrayList<>();
-            Time.add("Quick (under 30 minutes)");
-            Time.add("Medium (30-60 minutes)");
-            Time.add("Lengthy (over 1 hour)");
-            expandableListDetail.put("Preparation Time", Time);
+        List<String> Time = new ArrayList<>();
+        Time.add("Quick (under 30 minutes)");
+        Time.add("Medium (30-60 minutes)");
+        Time.add("Lengthy (over 1 hour)");
+        expandableListDetail.put("Preparation Time", Time);
 
-            List<String> Method = new ArrayList<>();
-            Method.add("Baking");
-            Method.add("Grilling");
-            Method.add("Slow Cooking");
-            Method.add("No-Cook");
-            Method.add("Stir-Frying:");
-            expandableListDetail.put("Cooking Method", Method);
+        List<String> Method = new ArrayList<>();
+        Method.add("Baking");
+        Method.add("Grilling");
+        Method.add("Slow Cooking");
+        Method.add("No-Cook");
+        Method.add("Stir-Frying:");
+        expandableListDetail.put("Cooking Method", Method);
 
-            List<String> Nutri = new ArrayList<>();
-            Nutri.add("Low-Calorie");
-            Nutri.add("Low-Carb");
-            Nutri.add("High-Protein");
-            Nutri.add("Low-Fat");
-            expandableListDetail.put("Nutritional Information", Nutri);
+        List<String> Nutri = new ArrayList<>();
+        Nutri.add("Low-Calorie");
+        Nutri.add("Low-Carb");
+        Nutri.add("High-Protein");
+        Nutri.add("Low-Fat");
+        expandableListDetail.put("Nutritional Information", Nutri);
 
-            List<String> Seasonal = new ArrayList<>();
-            Seasonal.add("Spring");
-            Seasonal.add("Summer");
-            Seasonal.add("Fall");
-            Seasonal.add("Winter");
-            expandableListDetail.put("Seasonal/Local Ingredients", Seasonal);
+        List<String> Seasonal = new ArrayList<>();
+        Seasonal.add("Spring");
+        Seasonal.add("Summer");
+        Seasonal.add("Fall");
+        Seasonal.add("Winter");
+        expandableListDetail.put("Seasonal/Local Ingredients", Seasonal);
 
-            List<String> skill = new ArrayList<>();
-            skill.add("Beginner");
-            skill.add("Intermediate");
-            skill.add("Advanced");
-            expandableListDetail.put("Skill Level", skill);
+        List<String> skill = new ArrayList<>();
+        skill.add("Beginner");
+        skill.add("Intermediate");
+        skill.add("Advanced");
+        expandableListDetail.put("Skill Level", skill);
 
-            List<String> Rating = new ArrayList<>();
-            Rating.add("Top Rated");
-            Rating.add("Most Popular");
-            expandableListDetail.put("Rating and Popularity", Rating);
+        List<String> Rating = new ArrayList<>();
+        Rating.add("Top Rated");
+        Rating.add("Most Popular");
+        expandableListDetail.put("Rating and Popularity", Rating);
 
-            List<String> size = new ArrayList<>();
-            size.add("Single Serving");
-            size.add("Family Size");
-            expandableListDetail.put("Serving Size", size);
+        List<String> size = new ArrayList<>();
+        size.add("Single Serving");
+        size.add("Family Size");
+        expandableListDetail.put("Serving Size", size);
 
-            List<String> Allergens = new ArrayList<>();
-            Allergens.add("Gluten-Free");
-            Allergens.add("Nut-Free");
-            expandableListDetail.put("Allergens", Allergens);
-        }
-
-
-        // The click handler for popular search terms
-        public void onPopularTermClick (View view){
-            if (view instanceof TextView) {
-                TextView textView = (TextView) view;
-                String term = textView.getText().toString();
-
-                // Check if the term is already selected
-                if (selectedSearchTerms.contains(term)) {
-                    // If it is, remove it from the set and change the background to indicate it's not selected
-                    selectedSearchTerms.remove(term);
-                    textView.setBackground(getDrawable(R.drawable.popular_term_background));
-                } else {
-                    // If it's not, add it to the set and change the background to indicate it's selected
-                    selectedSearchTerms.add(term);
-                    textView.setBackground(getDrawable(R.drawable.popular_term_background_selected));
-                }
-
-                updateSearchBar();
-            }
-        }
-
-        // Update the search bar with the selected terms
-        private void updateSearchBar () {
-            EditText etSearch = findViewById(R.id.etSearch);
-            // Join the selected terms with a space and set it to the search bar
-            String searchTerms = TextUtils.join(" ", selectedSearchTerms);
-            etSearch.setText(searchTerms);
-        }
-
+        List<String> Allergens = new ArrayList<>();
+        Allergens.add("Gluten-Free");
+        Allergens.add("Nut-Free");
+        expandableListDetail.put("Allergens", Allergens);
     }
+
+
+    // The click handler for popular search terms
+    public void onPopularTermClick (View view){
+        if (view instanceof TextView) {
+            TextView textView = (TextView) view;
+            String term = textView.getText().toString();
+
+            // Check if the term is already selected
+            if (selectedSearchTerms.contains(term)) {
+                // If it is, remove it from the set and change the background to indicate it's not selected
+                selectedSearchTerms.remove(term);
+                textView.setBackground(getDrawable(R.drawable.popular_term_background));
+            } else {
+                // If it's not, add it to the set and change the background to indicate it's selected
+                selectedSearchTerms.add(term);
+                textView.setBackground(getDrawable(R.drawable.popular_term_background_selected));
+            }
+
+            updateSearchBar();
+        }
+    }
+    private void updateSearchBar () {
+        EditText etSearch = findViewById(R.id.etSearch);
+        // Join the selected terms with a space and set it to the search bar
+        String searchTerms = TextUtils.join(" ", selectedSearchTerms);
+        etSearch.setText(searchTerms);
+    }
+
+
+
+}
