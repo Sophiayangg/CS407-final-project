@@ -159,11 +159,11 @@ public class Login extends AppCompatActivity {
     }
 
 
-    private boolean isValidCredentials(String email, String password) {
-        // Add your authentication logic here (e.g., check against a server)
-        // For this example, let's consider it valid if both fields are non-empty
-        return !email.isEmpty() && !password.isEmpty();
-    }
+//    private boolean isValidCredentials(String email, String password) {
+//        // Add your authentication logic here (e.g., check against a server)
+//        // For this example, let's consider it valid if both fields are non-empty
+//        return !email.isEmpty() && !password.isEmpty();
+//    }
 
     private void showErrorToast(String message) {
         // Inflate the custom layout.
@@ -179,4 +179,54 @@ public class Login extends AppCompatActivity {
         toast.setView(layout); // Set the inflated layout
         toast.show();
     }
+
+    private boolean isValidCredentials(String email, String password) {
+        // Check if email and password are non-empty
+        if (email.isEmpty() || password.isEmpty()) {
+            return false;
+        }
+
+        // Check if the email follows a basic email pattern
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Email is not in a valid format
+            return false;
+        }
+
+        // Check if the password meets certain criteria (e.g., minimum length)
+        int minPasswordLength = 8; // Change this to your desired minimum password length
+        if (password.length() < minPasswordLength) {
+            // Password is too short
+            return false;
+        }
+
+        // Check if the password contains at least one uppercase letter
+        if (!password.matches(".*[A-Z].*")) {
+            // Password doesn't contain an uppercase letter
+            return false;
+        }
+
+        // Check if the password contains at least one lowercase letter
+        if (!password.matches(".*[a-z].*")) {
+            // Password doesn't contain a lowercase letter
+            return false;
+        }
+
+        // Check if the password contains at least one digit
+        if (!password.matches(".*\\d.*")) {
+            // Password doesn't contain a digit
+            return false;
+        }
+
+        // Check if the password contains at least one special character
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            // Password doesn't contain a special character
+            return false;
+        }
+
+        // You can add more sophisticated checks here based on your requirements
+
+        // If all checks pass, consider the credentials valid
+        return true;
+    }
+
 }
