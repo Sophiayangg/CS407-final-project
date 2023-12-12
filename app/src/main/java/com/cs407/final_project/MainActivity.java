@@ -1,10 +1,19 @@
 package com.cs407.final_project;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ImageView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -14,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +31,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ImageView avatarImageView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);    //signup page
+
+        avatarImageView = findViewById(R.id.avatarImageView);
+
+
         TextView loginTextView = (TextView) findViewById(R.id.login);
         String text = "Log In";
         SpannableString spannableString = new SpannableString(text);
@@ -100,6 +118,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
+    public void uploadImage(View view) {
+        // Open the camera to capture an image
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    // Handle the result of the image capture
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Get the captured image
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            // Set the captured image to the avatarImageView
+            avatarImageView.setImageBitmap(imageBitmap);
+        }
+    }
+
+
     private boolean isValidEmail(String email) {
         // Check if email is valid
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
