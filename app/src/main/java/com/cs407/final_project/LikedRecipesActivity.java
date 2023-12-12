@@ -324,19 +324,19 @@ public class LikedRecipesActivity extends AppCompatActivity {
 
     // Other methods
 
-    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+    public void onBindViewHolder(view holder, int position) {
         // Other binding code
 
-        holder.likeButton.setOnClickListener(new View.OnClickListener() {
+        holder(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Toggle like status
-                boolean newLikeStatus = recipe.toggleLiked();
+                boolean newLikeStatus = toggleLiked();
 
                 // Perform animation based on the new like status
                 if (newLikeStatus) {
                     // Add a like animation
-                    animateLike(holder.likeButton);
+                    animateLike(holder);
                 }
 
                 notifyDataSetChanged(); // Update UI
