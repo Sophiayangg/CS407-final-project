@@ -106,4 +106,29 @@ public class HistoryRecipeDetail extends AppCompatActivity {
             }
         });
     }
+
+    @Test
+    public void testGetRecipeDetails() {
+        // Given a recipe ID
+        int recipeId = 123;
+
+        // Given a mock Recipe object
+        Recipe mockRecipe = new Recipe();
+        mockRecipe.setId(recipeId);
+        mockRecipe.setName("Test Recipe");
+        mockRecipe.setIngredients("Ingredient 1, Ingredient 2");
+        mockRecipe.setInstructions("Step 1, Step 2");
+
+        // When the repository returns the mock recipe for the given ID
+        when(mockRepository.getRecipeById(recipeId)).thenReturn(mockRecipe);
+
+        // When the presenter is asked to retrieve recipe details
+        RecipeDetails recipeDetails = presenter.getRecipeDetails(recipeId);
+
+        // Then verify that the returned recipe details match the mock recipe
+        assertEquals(recipeId, recipeDetails.getId());
+        assertEquals("Test Recipe", recipeDetails.getName());
+        assertEquals("Ingredient 1, Ingredient 2", recipeDetails.getIngredients());
+        assertEquals("Step 1, Step 2", recipeDetails.getInstructions());
+    }
 }
