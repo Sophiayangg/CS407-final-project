@@ -50,7 +50,7 @@ public class Login extends AppCompatActivity {
          */
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.Password);
-        rememberMeCheckBox = findViewById(R.id.checkBoxRememberMe);
+        //rememberMeCheckBox = findViewById(R.id.checkBoxRememberMe);
         Button loginButton = findViewById(R.id.login);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
