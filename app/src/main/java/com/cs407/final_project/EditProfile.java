@@ -65,8 +65,12 @@ public class EditProfile extends AppCompatActivity {
 
         if (requestCode == PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permissions granted
+                // You can proceed with opening the camera or gallery
             } else {
+                // Permission was denied
                 Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                // Handle the feature without the permission or disable it
             }
         }
     }
