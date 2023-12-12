@@ -9,6 +9,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,6 +18,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,7 +69,72 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         SharedPreferences preferences = getSharedPreferences("User", MODE_PRIVATE);
+        email = preferences.getString("email", "");
+
+        ImageView profileImageView = findViewById(R.id.profile_img);
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath = new File(directory, email+".jpg");
+
+        if (mypath.exists()) {
+            Bitmap retrievedBitmap = BitmapFactory.decodeFile(mypath.getAbsolutePath());
+            profileImageView.setImageBitmap(retrievedBitmap);
+        } else {
+            //
+        }
+
+        requestPermissions();
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImagePickDialog();
+            }
+        });
+
+
+
+        Button saveButton = findViewById(R.id.svae_btn);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editTextFirstname = findViewById(R.id.firstName);
+                EditText editTextLastname = findViewById(R.id.lastName);
+                EditText editTextPassword = findViewById(R.id.Password);
+
+                String  firstname= String.valueOf(editTextFirstname.getText());
+                String  lastname = String.valueOf(editTextLastname.getText());
+                String  password = String.valueOf(editTextPassword.getText());
+
+
+                if (!isPasswordStrong(password)) {
+                    showErrorToast("Password must be at least 6 characters long, contain at least one number, and one lowercase letter.");
+                    return;
+                }
+
+                Context context = getApplicationContext();
+                SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("users", Context.MODE_PRIVATE, null);
+
+                DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+                dbHelper.deleteUser(email);
+                String message = dbHelper.saveUser(firstname, lastname, email, password);
+                Log.i("RegistrationTag", message);
+
+                if (message.contains("email already registered")) {
+                    showErrorToast(message);
+                } else {
+                    Intent intent = new Intent(ProfileImage.this, Profile.class);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("firstname",firstname);
+                    editor.putString("lastname",lastname);
+                    editor.apply();
+                    startActivity(intent);
+                }
+            }
+        });
+
+
         email = preferences.getString("email", "User");
 
         ImageView profile = findViewById(R.id.profile_img);
