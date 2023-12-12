@@ -59,7 +59,7 @@ public class Home extends AppCompatActivity {
 
     private String email;
 
-    private String apiKey = "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";
+    private String apiKey = "lalalala";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
