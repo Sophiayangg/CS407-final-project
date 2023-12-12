@@ -265,4 +265,88 @@ public class LikedRecipesActivity extends AppCompatActivity {
 
     }
 
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void incrementLikeCount() {
+        likeCount++;
+    }
+
+    public void decrementLikeCount() {
+        if (likeCount > 0) {
+            likeCount--;
+        }
+    }
+    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+        // Other binding code
+
+        holder.likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toggle like status
+                recipe.toggleLiked();
+                notifyDataSetChanged(); // Update UI
+            }
+        });
+    }
+    private String name;
+    private boolean isLiked;
+
+    // Other properties and methods
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+    // Fetch and display liked recipes
+
+    private void displayLikedRecipes() {
+        // Fetch liked recipes from the database or other storage
+        List<Recipe> likedRecipes = recipeRepository.getLikedRecipes();
+
+        // Display the liked recipes in a RecyclerView or other UI component
+        // ...
+    }
+    private String name;
+    private boolean isLiked;
+
+    // Other properties and methods
+
+    public boolean toggleLiked() {
+        // Toggle like status and return the new status
+        isLiked = !isLiked;
+        return isLiked;
+    }
+
+    // Other methods
+
+    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+        // Other binding code
+
+        holder.likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toggle like status
+                boolean newLikeStatus = recipe.toggleLiked();
+
+                // Perform animation based on the new like status
+                if (newLikeStatus) {
+                    // Add a like animation
+                    animateLike(holder.likeButton);
+                }
+
+                notifyDataSetChanged(); // Update UI
+            }
+        });
+    }
+
+    private void animateLike(View view) {
+        // Implement an animation for the like action
+        // You can use ObjectAnimator, Lottie animation, or other animation techniques
+    }
+
 }
